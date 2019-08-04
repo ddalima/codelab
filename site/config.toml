@@ -1,4 +1,4 @@
-baseURL = "http://codelab.alcide.io"
+baseURL = "http://codelab.alcide.io/"
 languageCode = "en-us"
 title = "Alcide | Tutorials & Codelabs"
 theme = "cards"
