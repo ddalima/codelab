@@ -12,10 +12,10 @@ In this tutorial we will learn about **Alcide Kubernetes Advisor**, and how we c
 > Note: this freely-available edition of Alcide Kubernrtes Advisor which scans Kubernetes cluster hygiene and security best practices. Alcide's commercial customers have access to *additional scanning features*, such as policy driven kubernetes scan, automatic updates, consuming reports from multiple clusters in a single dashboard, and enforcing policies using adminssion controller.
 [Start your 30-day free trial](https://www.alcide.io/advisor-free-trial/)
 
-<a href="codelabs/advisor-codelab-01/index.html" class="btn btn-primary" role="button">Start Codelab</a>
+<a href="{{ .Site.BaseURL }}codelabs/advisor-codelab-01/index.html" class="btn btn-primary" role="button">Start Codelab</a>
 
-<a href="codelabs/advisor-codelab-01/index.html">
-<img src="images/codelab-footer-02.png" alt="Lets Start" width="600"/></a>
+<a href="{{ .Site.BaseURL }}codelabs/advisor-codelab-01/index.html">
+<img src="{{ .Site.BaseURL }}images/codelab-footer-02.png" alt="Lets Start" width="600"/></a>
 
 
 
