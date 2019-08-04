@@ -1,4 +1,4 @@
-baseURL = "https://alcideio.github.io/codelab/"
+baseURL = "https://codelab.alcide.io"
 languageCode = "en-us"
 title = "Alcide | Tutorials & Codelabs"
 theme = "cards"
