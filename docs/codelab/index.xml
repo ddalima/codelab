@@ -2,31 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Codelabs on Alcide | Tutorials &amp; Codelabs</title>
-    <link>https://codelab.alcide.io/codelab/</link>
+    <link>http://codelab.alcide.io/codelab/</link>
     <description>Recent content in Codelabs on Alcide | Tutorials &amp; Codelabs</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 31 Jul 2019 10:51:47 +0530</lastBuildDate>
     
-	<atom:link href="https://codelab.alcide.io/codelab/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://codelab.alcide.io/codelab/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Alcide Advisor Overview</title>
-      <link>https://codelab.alcide.io/codelab/advisor-codelab-01/</link>
+      <link>http://codelab.alcide.io/codelab/advisor-codelab-01/</link>
       <pubDate>Wed, 31 Jul 2019 10:51:47 +0530</pubDate>
       
-      <guid>https://codelab.alcide.io/codelab/advisor-codelab-01/</guid>
+      <guid>http://codelab.alcide.io/codelab/advisor-codelab-01/</guid>
       <description>In this tutorial we will learn about Alcide Kubernetes Advisor, and how we can implement continous security and cluster hygiene for one or more Kubernetes clusters.
  Note: this freely-available edition of Alcide Kubernrtes Advisor which scans Kubernetes cluster hygiene and security best practices. Alcide&amp;rsquo;s commercial customers have access to additional scanning features, such as policy driven kubernetes scan, automatic updates, consuming reports from multiple clusters in a single dashboard, and enforcing policies using adminssion controller.</description>
     </item>
     
     <item>
       <title>Azure DevOps Pipelines Integration</title>
-      <link>https://codelab.alcide.io/codelab/advisor-codelab-03/</link>
+      <link>http://codelab.alcide.io/codelab/advisor-codelab-03/</link>
       <pubDate>Wed, 31 Jul 2019 10:51:47 +0530</pubDate>
       
-      <guid>https://codelab.alcide.io/codelab/advisor-codelab-03/</guid>
+      <guid>http://codelab.alcide.io/codelab/advisor-codelab-03/</guid>
       <description>In this tutorial we will learn about Alcide Kubernetes Advisor, and how we can implement continous security and cluster hygiene for one or more Kubernetes clusters in a Azure DevOps pipeline.
  Azure DevOps on Visual Studio Marketplace can be found here
  Start Codelab
@@ -36,10 +36,10 @@
     
     <item>
       <title>Jenkins Integration</title>
-      <link>https://codelab.alcide.io/codelab/advisor-codelab-02/</link>
+      <link>http://codelab.alcide.io/codelab/advisor-codelab-02/</link>
       <pubDate>Wed, 31 Jul 2019 10:51:47 +0530</pubDate>
       
-      <guid>https://codelab.alcide.io/codelab/advisor-codelab-02/</guid>
+      <guid>http://codelab.alcide.io/codelab/advisor-codelab-02/</guid>
       <description>In this tutorial we will learn about Alcide Kubernetes Advisor, and how we can implement continous security and cluster hygiene for one or more Kubernetes clusters in a Jenkins CI+CD pipeline.
 Start Codelab
  Note: this freely-available edition of Alcide Kubernrtes Advisor which scans Kubernetes cluster hygiene and security best practices. Alcide&amp;rsquo;s commercial customers have access to additional scanning features, such as policy driven kubernetes scan, automatic updates, consuming reports from multiple clusters in a single dashboard, and enforcing policies using adminssion controller.</description>
@@ -47,10 +47,10 @@ Start Codelab
     
     <item>
       <title>Multi Cluster Scans</title>
-      <link>https://codelab.alcide.io/codelab/coming-soon-codelab-90/</link>
+      <link>http://codelab.alcide.io/codelab/coming-soon-codelab-90/</link>
       <pubDate>Wed, 31 Jul 2019 10:51:47 +0530</pubDate>
       
-      <guid>https://codelab.alcide.io/codelab/coming-soon-codelab-90/</guid>
+      <guid>http://codelab.alcide.io/codelab/coming-soon-codelab-90/</guid>
       <description>Coming Soon |
 A codelab that illustrates how to implement Alcide Kubernetes Advisor scan for multiple clusters.</description>
     </item>

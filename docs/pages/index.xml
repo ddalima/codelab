@@ -2,20 +2,20 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Pages on Alcide | Tutorials &amp; Codelabs</title>
-    <link>https://codelab.alcide.io/pages/</link>
+    <link>http://codelab.alcide.io/pages/</link>
     <description>Recent content in Pages on Alcide | Tutorials &amp; Codelabs</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     
-	<atom:link href="https://codelab.alcide.io/pages/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://codelab.alcide.io/pages/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>About</title>
-      <link>https://codelab.alcide.io/pages/about/</link>
+      <link>http://codelab.alcide.io/pages/about/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
-      <guid>https://codelab.alcide.io/pages/about/</guid>
+      <guid>http://codelab.alcide.io/pages/about/</guid>
       <description>Alcide Kubernetes Advisor In this freely-available edition of Alcide Kubernrtes Advisor which scans Kubernetes cluster hygiene and security best practices. Alcide&amp;rsquo;s commercial customers have access to additional scanning features, such as policy driven kubernetes scan, automatic updates, consuming reports from multiple clusters in a single dashboard, and enforcing policies using adminssion controller.
  Start your 30-day free trial
  </description>

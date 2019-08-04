@@ -2,30 +2,30 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on Alcide | Tutorials &amp; Codelabs</title>
-    <link>https://codelab.alcide.io/categories/</link>
+    <link>http://codelab.alcide.io/categories/</link>
     <description>Recent content in Categories on Alcide | Tutorials &amp; Codelabs</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 31 Jul 2019 10:51:47 +0530</lastBuildDate>
     
-	<atom:link href="https://codelab.alcide.io/categories/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="http://codelab.alcide.io/categories/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>codelabs</title>
-      <link>https://codelab.alcide.io/categories/codelabs/</link>
+      <link>http://codelab.alcide.io/categories/codelabs/</link>
       <pubDate>Wed, 31 Jul 2019 10:51:47 +0530</pubDate>
       
-      <guid>https://codelab.alcide.io/categories/codelabs/</guid>
+      <guid>http://codelab.alcide.io/categories/codelabs/</guid>
       <description></description>
     </item>
     
     <item>
       <title>codelabs advisor</title>
-      <link>https://codelab.alcide.io/categories/codelabs-advisor/</link>
+      <link>http://codelab.alcide.io/categories/codelabs-advisor/</link>
       <pubDate>Wed, 31 Jul 2019 10:51:47 +0530</pubDate>
       
-      <guid>https://codelab.alcide.io/categories/codelabs-advisor/</guid>
+      <guid>http://codelab.alcide.io/categories/codelabs-advisor/</guid>
       <description></description>
     </item>
     
