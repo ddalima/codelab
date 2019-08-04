@@ -1,0 +1,250 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Alcide Kubernetes Advisor Overview</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid="0"
+                  id="00001"
+                  title="Alcide Kubernetes Advisor Overview"
+                  environment="web"
+                  feedback-link="https://github.com/alcideio/pipeline">
+    
+      <google-codelab-step label="Welcome" duration="1">
+        <p>In this tutorial we will learn about <strong>Alcide Kubernetes Advisor</strong>, and how we can implement continous security and cluster hygiene for one or more Kubernetes clusters.</p>
+<p class="image-container"><img alt="Alcide Code-to-production secutiry" style="width: 300.00px" src="img/ae3ed2591efa082a.png"></p>
+<p>Alcide Advisor is an agentless Kubernetes audit, compliance and hygiene scanner that&#39;s built to ensure a friciton free DevSecOps workflows. Alcide Advisor can be plugged early in the development process and before moving to production.</p>
+<h3 is-upgraded>With Alcide Advisor, the security checks you can cover includes:</h3>
+<ul>
+<li>Kubernetes infrastructure vulnerability scanning.</li>
+<li>Hunting misplaced secrets, or excessive priviliges for secret access.</li>
+<li>Workload hardening from Pod Security to network policies.</li>
+<li>Istio security configuration and best practices.</li>
+<li>Ingress Controllers for security best practices.</li>
+<li>Kubernetes API server access privileges.</li>
+<li>Kubernetes operators security best practices.</li>
+<li>Deployment conformance to labeling, annotating, resource limits and much more ...</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Prerequisites" duration="0">
+        <p><em>If you already have a running kubernetes cluster you can work with you can skip this step</em></p>
+<p>For this tutorial you will need a Kubernetes cluster with enough permissions to deploy resources into it.</p>
+<ul>
+<li><a href="https://kubernetes.io/docs/tasks/tools/install-kubectl/" target="_blank">Install and Set Up kubectl</a>.</li>
+<li><a href="https://kubernetes.io/docs/tasks/tools/install-minikube/" target="_blank">Install Minikube</a>, or any working Kubernetes Cluster</li>
+</ul>
+<p class="image-container"><img alt="Alcide Code-to-production secutiry" style="width: 800.00px" src="img/59db1bd85aca6cb1.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Prepare Your Environment" duration="2">
+        <p><a href="tutorial.zip" target="_blank">Download Files</a> into <strong>/tmp</strong> and unpack</p>
+<pre><code>cd /tmp &amp;&amp;\
+unzip -o tutorial.zip
+</code></pre>
+<aside class="special"><p>Download kube-advisor into <strong>/tmp/training/advisor</strong> or any other location.</p>
+</aside>
+<h3 is-upgraded>For Linux</h3>
+<pre><code>cd /tmp/training/advisor &amp;&amp;\
+curl -o advisor https://alcide.blob.core.windows.net/generic/stable/linux/advisor &amp;&amp;\
+chmod +x advisor
+</code></pre>
+<h3 is-upgraded>For Mac</h3>
+<pre><code>cd /tmp/training/advisor &amp;&amp;\
+curl -o advisor https://alcide.blob.core.windows.net/generic/stable/darwin/advisor &amp;&amp;\
+chmod +x advisor
+</code></pre>
+<p class="image-container"><img alt="Alcide Code-to-production secutiry" style="width: 200.00px" src="img/e5a79d18acb8988e.svg"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Full Cluster Scan" duration="3">
+        <p>We are going to start with an initial cluster scan using the buitin scan profile.</p>
+<pre><code>cd /tmp/training/advisor &amp;&amp;\
+ ./advisor validate cluster --cluster-context minikube \
+--namespace-include=&#34;*&#34; --namespace-exclude=&#34;-&#34; --outfile scan.html
+</code></pre>
+<p>Open in your browser the generated report <strong>scan.html</strong> and review the result across the various categories.</p>
+<pre><code>google-chrome scan.html&amp;   or   open scan.html&amp;
+</code></pre>
+<p class="image-container"><img alt="Alcide Code-to-production secutiry" style="width: 600.00px" src="img/47a932268530064a.svg"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Usecase #1: Secret Hunting" duration="6">
+        <p>The reality with Kubernetes clusters is that resources can be mutated as a result of variety of events.<br>For example:</p>
+<ul>
+<li>User making a manual change to the cluster (<em>kubectl edit ...</em>)</li>
+<li>Code change, that as part of a deployment pipeline, will end up in a running cluster</li>
+<li>A change in the deployment automation machinery such as Terraform or Ansible</li>
+</ul>
+<p>Let&#39;s simulate such change ... we are going to add an <em>AWS Access Key</em> into a <em>PodSpec</em></p>
+<p>Delete nginx deployment from the cluster.</p>
+<pre><code>cat &lt;&lt;EOF | kubectl apply -f -
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  labels:
+    run: nginx
+  name: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: nginx
+  template:
+    metadata:
+      labels:
+        run: nginx
+    spec:
+      containers:
+      - image: nginx
+        env:
+          - name: &#34;aws_secret&#34;
+            value: &#34;AKIAI222221111BBBAAA&#34;
+        imagePullPolicy: Always
+        name: nginx
+        resources: {}
+EOF
+</code></pre>
+<p>Let&#39;s run the scan again and review the findings.</p>
+<pre><code>cd /tmp/training &amp;&amp; ./advisor validate cluster --cluster-context minikube --namespace-include=&#34;*&#34; --namespace-exclude=&#34;-&#34; --outfile scan.html
+</code></pre>
+<p>Open in your browser the generated report <strong>scan.html</strong> and look at the <strong>Secret Hunting</strong> section</p>
+<pre><code>google-chrome scan.html&amp;   or   open scan.html&amp;
+</code></pre>
+<p class="image-container"><img alt="Alcide Code-to-production secutiry" style="width: 500.00px" src="img/f7d434739e6732c5.svg"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Kubernetes Hygiene Drift" duration="1">
+        <p>Maintaining a certain hygiene level in Kubernetes is challanging.<br>Doing so continously, is a greater challange, and across multiple cluster that&#39;s even harder.</p>
+<h3 is-upgraded>Cluster Hygiene Components</h3>
+<ul>
+<li>Cluster infrastructure (Control plane, Nodes) hygiene - CVEs, hardenning</li>
+<li>Cluster resource hardening (monitoring, ingress, service...)</li>
+<li>Workloads configuration &amp; hardenning</li>
+<li>Workload software supply chain hygiene</li>
+</ul>
+<p class="image-container"><img alt="Alcide Code-to-production secutiry" style="width: 800.00px" src="img/59db1bd85aca6cb1.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Creating Cluster Hygiene Baseline" duration="3">
+        <p>Let&#39;s start with establishing a baseline of whatever is currently running in a cluster.<br>The assumption here is that existing environment satifies our hygiene expectations - but that is not necessarily the reality, which is why reviewing a full cluster scan is critical from best practice perspective.</p>
+<aside class="warning"><p>Note <strong>baseline.yaml</strong> now holds our cluster baseline - do not modify this file manually</p>
+</aside>
+<pre><code>cd /tmp/training/advisor &amp;&amp;\ 
+./advisor generate policy-profile --cluster-context minikube --namespace-include=&#34;*&#34; --namespace-exclude=&#34;-&#34; --outfile baseline.yaml
+</code></pre>
+<p class="image-container"><img alt="Alcide Code-to-production secutiry" style="width: 600.00px" src="img/47a932268530064a.svg"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Usecase #2: Image Registry Whitelisting" duration="3">
+        <p>Let&#39;s introduce a new resource into the cluster, which use an image from an unauthorized location.</p>
+<pre><code>cat &lt;&lt;EOF | kubectl apply -f -
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: hello-badimage
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      run: hello-badimage
+  template:
+    metadata:
+      labels:
+        run: hello-badimage
+    spec:
+      containers:
+      - image: k8s.gcr.io/echoserver:1.10
+        imagePullPolicy: IfNotPresent
+        name: hello-badimage
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+EOF
+</code></pre>
+<aside class="special"><p>Note the baseline we created contains the image registries used at baseline creation time</p>
+</aside>
+<p>Let&#39;s run the scan again, but now with the generated profile,<br>which contains a the list of observed image registries and review the findings.</p>
+<pre><code>cd /tmp/training/advisor &amp;&amp; ./advisor validate cluster --cluster-context minikube --namespace-include=&#34;*&#34; --namespace-exclude=&#34;-&#34; --policy-profile baseline.yaml --outfile scan.html
+</code></pre>
+<p>Open in your browser the generated report <strong>scan.html</strong> and look at the <strong>Secret Hunting</strong> section</p>
+<pre><code>google-chrome scan.html&amp;   or   open scan.html&amp;
+</code></pre>
+<aside class="special"><p>We should now see that the <em>Workload Software Supply Chain</em> has a critical exception</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Running The Entire Playbook" duration="6">
+        <h3 is-upgraded>Open and edit advisor-minikube-demo.sh</h3>
+<aside class="warning"><p>Set your local editor <strong>DEFAULT_TEXT_EDITOR</strong></p>
+</aside>
+<aside class="warning"><p>Set your local web browser  <strong>WEB_BROWSER</strong></p>
+</aside>
+<aside class="warning"><p>Set you target cluster  <strong>KUBE_CLUSTER</strong></p>
+</aside>
+<h3 is-upgraded>Run the playbook</h3>
+<aside class="special"><p>Hit the <strong>Enter</strong> to move from one step to the next one.</p>
+</aside>
+<pre><code>cd /tmp/training/advisor &amp;&amp;\
+export  DEFAULT_TEXT_EDITOR=vim &amp;&amp;\
+export  WEB_BROWSER=google-chrome &amp;&amp;\
+export  KUBE_CLUSTER=minikube &amp;&amp;\
+./advisor-minikube-demo.sh
+</code></pre>
+<p class="image-container"><img alt="Alcide Code-to-production secutiry" style="width: 400.00px" src="img/e26eace1d7dfdf8c.svg"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Additional References" duration="1">
+        <h2 is-upgraded>CI+CD Integration samples</h2>
+<p>See <a href="https://github.com/alcideio/pipeline" target="_blank">https://github.com/alcideio/pipeline</a></p>
+<h2 is-upgraded>GKE Multi-cluster Scan Example</h2>
+<p>See <a href="https://raw.githubusercontent.com/alcideio/pipeline/master/scripts/gke-advisor-scan.sh" target="_blank">gke-advisor-scan.sh</a></p>
+<p class="image-container"><img alt="Alcide Code-to-production secutiry" style="width: 700.00px" src="img/47a932268530064a.svg"></p>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+
+</body>
+</html>

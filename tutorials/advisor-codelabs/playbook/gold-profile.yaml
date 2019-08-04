@@ -1,0 +1,1837 @@
+Description: Auto Generated kube-advisor profile based on cluster 'minikube'
+Name: kube-formation-autogen@minikube
+Policy:
+  Modules:
+  - ConfigItems: null
+    Groups:
+    - Checks:
+      - Action: Alert
+        ID: "1"
+        Items: null
+        Recommendation: "If using a Kubelet config file, edit the file to set authentication:
+          anonymous: enabled to false.\nIf using executable arguments, edit the kubelet
+          service file $kubeletconf on each worker node and set the below parameter
+          in KUBELET_SYSTEM_PODS_ARGS variable. \n--anonymous-auth=false Based on
+          your system, restart the kubelet service. For example:\nsystemctl daemon-reload\nsystemctl
+          restart kubelet.service"
+        References:
+        - https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet-authentication-authorization/#kubelet-authentication
+        Requirements:
+        - '{{ JmespathBoolQuery  "to_string(authentication.anonymous.enabled)==''null''
+          || to_string(authentication.anonymous.enabled) == ''false''" }}'
+        Severity: High
+        Title: Ensure that the --anonymous-auth argument is set to false (CIS 2.1.1
+          Scored)
+      - Action: Alert
+        ID: "2"
+        Items: null
+        Recommendation: |-
+          If using a Kubelet config file, edit the file to set authorization: mode to Webhook.
+          If using executable arguments, edit the kubelet service file $kubeletconf on each worker node and set the below parameter in KUBELET_AUTHZ_ARGS variable.
+          --authorization-mode=Webhook Based on your system, restart the kubelet service. For example:
+          systemctl daemon-reload
+          systemctl restart kubelet.service
+        References:
+        - https://kubernetes.io/docs/admin/kubelet-authentication-authorization/#kubelet-authentication
+        Requirements:
+        - '{{ JmespathBoolQuery  "to_string(authorization.mode) != ''AlwaysAllow''"
+          }}'
+        Severity: High
+        Title: Ensure that the --authorization-mode argument is not set to AlwaysAllow
+          (CIS 2.1.2 Scored)
+      - Action: Alert
+        ID: "3"
+        Items: null
+        Recommendation: "If using a Kubelet config file, edit the file to set authentication:
+          x509: clientCAFile \nto the location of the client CA file.\nIf using command
+          line arguments, edit the kubelet service file $kubeletconf on each worker
+          node and set the below parameter in KUBELET_AUTHZ_ARGS variable.\n--client-ca-file=<path/to/client-ca-file>
+          Based on your system, restart the kubelet service. For example:\nsystemctl
+          daemon-reload\nsystemctl restart kubelet.service"
+        References:
+        - https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet-authentication-authorization/
+        Requirements:
+        - '{{ JmespathBoolQuery  "to_string(authentication.x509.clientCAFile) != ''''"
+          }}'
+        Severity: High
+        Title: Ensure that the --client-ca-file argument is set as appropriate (CIS
+          2.1.3 Scored)
+      - Action: Alert
+        ID: "4"
+        Items: null
+        Recommendation: |-
+          If using a Kubelet config file, edit the file to set readOnlyPort to 0.
+          If using command line arguments, edit the kubelet service file $kubeletconf on each worker node and set the below parameter in KUBELET_SYSTEM_PODS_ARGS variable.
+          --read-only-port=0 Based on your system, restart the kubelet service. For example:
+          systemctl daemon-reload
+          systemctl restart kubelet.service
+        References:
+        - https://kubernetes.io/docs/admin/kubelet/
+        Requirements:
+        - '{{ JmespathBoolQuery  "to_string(readOnlyPort)==''null'' || to_string(readOnlyPort)==''0''"
+          }}'
+        Severity: High
+        Title: Ensure that the --read-only-port argument is set to 0 (CIS 2.1.4 Scored)
+      - Action: Alert
+        ID: "5"
+        Items: null
+        Recommendation: |-
+          If using a Kubelet config file, edit the file to set streamingConnectionIdleTimeout to a value other than 0.
+          If using command line arguments, edit the kubelet service file $kubeletconf on each worker node and set the below parameter in KUBELET_SYSTEM_PODS_ARGS variable.
+          --streaming-connection-idle-timeout=5m Based on your system, restart the kubelet service. For example:
+          systemctl daemon-reload
+          systemctl restart kubelet.service
+        References:
+        - https://github.com/kubernetes/kubernetes/pull/18552
+        Requirements:
+        - '{{ JmespathBoolQuery  "to_string(streamingConnectionIdleTimeout) != ''0''"
+          }}'
+        Severity: High
+        Title: Ensure that the --streaming-connection-idle-timeout argument is not
+          set to 0 (CIS 2.1.5 Scored)
+      - Action: Alert
+        ID: "6"
+        Items: null
+        Recommendation: |-
+          If using a Kubelet config file, edit the file to set protectKernelDefaults: true .
+          If using command line arguments, edit the kubelet service file $kubeletconf on each worker node and set the below parameter in KUBELET_SYSTEM_PODS_ARGS variable.
+          --protect-kernel-defaults=true Based on your system, restart the kubelet service. For example:
+          systemctl daemon-reload
+          systemctl restart kubelet.service
+        References:
+        - https://kubernetes.io/docs/admin/kubelet/
+        Requirements:
+        - '{{ JmespathBoolQuery  "to_string(protectKernelDefaults) == ''true''" }}'
+        Severity: High
+        Title: Ensure that the --protect-kernel-defaults argument is set to true (CIS
+          2.1.6 Scored)
+      - Action: Alert
+        ID: "7"
+        Items: null
+        Recommendation: |-
+          If using a Kubelet config file, edit the file to set makeIPTablesUtilChains: true .
+          If using command line arguments, edit the kubelet service file $kubeletconf on each worker node and remove the --make-iptables-util-chains argument from the KUBELET_SYSTEM_PODS_ARGS variable.
+          Based on your system, restart the kubelet service. For example:
+          systemctl daemon-reload
+          systemctl restart kubelet.service
+        References:
+        - https://kubernetes.io/docs/admin/kubelet
+        Requirements:
+        - '{{ JmespathBoolQuery  "to_string(makeIPTablesUtilChains) == ''true''" }}'
+        Severity: High
+        Title: Ensure that the --make-iptables-util-chains argument is set to true
+          (CIS 2.1.7 Scored)
+      - Action: Alert
+        ID: "8"
+        Items: null
+        Message: "Overriding hostnames could potentially break TLS setup between the
+          kubelet and the apiserver. \nAdditionally, with overridden hostnames, it
+          becomes increasingly difficult to associate logs with a particular node
+          and process them for security analytics. \nHence, you should setup your
+          kubelet nodes with resolvable FQDNs and avoid overriding the hostnames with
+          IPs."
+        References:
+        - https://github.com/kubernetes/kubernetes/issues/22063
+        Requirements:
+        - "true"
+        Severity: High
+        Title: Ensure that the --hostname-override argument is not set (CIS 2.1.8
+          Scored)
+      - Action: Alert
+        ID: "9"
+        Items: null
+        Message: "It is important to capture all events and not restrict event creation.
+          \nEvents are an important source of security information and analytics that
+          ensure that your environment is consistently monitored using the event data."
+        Recommendation: "If using a Kubelet config file, edit the file to set eventRecordQPS:
+          0 .\nIf using command line arguments, edit the kubelet service file $kubeletconf
+          on each worker node and set the below parameter in KUBELET_SYSTEM_PODS_ARGS
+          variable. \n--event-qps=0 Based on your system, restart the kubelet service.
+          For example:\nsystemctl daemon-reload\nsystemctl restart kubelet.service"
+        Requirements:
+        - '{{ JmespathBoolQuery  "to_string(eventRecordQPS)==''null'' || to_string(eventRecordQPS)
+          == ''0''" }}'
+        Severity: High
+        Title: Ensure that the --event-qps argument is set to 0 (CIS 2.1.9 Scored)
+      - Action: Alert
+        ID: "10"
+        Items: null
+        Message: "Kubelet communication contains sensitive parameters that should
+          remain encrypted in transit. \nConfigure the Kubelets to serve only HTTPS
+          traffic."
+        Recommendation: |-
+          If using a Kubelet config file, edit the file to set tlsCertFile to the location of the certificate
+          file to use to identify this Kubelet, and tlsPrivateKeyFile to the location of the corresponding private key file.
+          If using command line arguments, edit the kubelet service file $kubeletconf on each worker node and set the below parameters in KUBELET_CERTIFICATE_ARGS variable.
+          --tls-cert-file=<path/to/tls-certificate-file> file=<path/to/tls-key-file> Based on your system, restart the kubelet service. For example:
+          systemctl daemon-reload
+          systemctl restart kubelet.service
+        References:
+        - https://jvns.ca/blog/2017/08/05/how-kubernetes-certificates-work/
+        Requirements:
+        - '{{ JmespathBoolQuery  "tlsCertFile != '''' && tlsPrivateKeyFile != ''''"
+          }}'
+        Severity: High
+        Title: Ensure that the --tls-cert-file and --tls-private-key-file arguments
+          are set as appropriate (CIS 2.1.10 Scored)
+      - Action: Alert
+        ID: "11"
+        Items: null
+        Message: "cAdvisor provides potentially sensitive data and there's currently
+          no way to block access to it using anything other than iptables. \nIt does
+          not require authentication/authorization to connect to the cAdvisor port.
+          Hence, you should disable the port.\nThe cAdvisor port setting was deprecated
+          in Kubernetes v1.10 and will be removed in v1.12"
+        Recommendation: "Edit the kubelet service file $kubeletconf on each worker
+          node and set the below parameter in KUBELET_CADVISOR_ARGS variable. \n--cadvisor-port=0
+          Based on your system, restart the kubelet service. For example:\nsystemctl
+          daemon-reload\nsystemctl restart kubelet.service"
+        Requirements:
+        - '{{ JmespathBoolQuery  "to_string(cAdvisorPort)==''null'' || to_string(cAdvisorPort)
+          == ''0''" }}'
+        Severity: High
+        Title: Ensure that the --cadvisor-port argument is set to 0 (CIS 2.1.11 Scored)
+      - Action: Alert
+        ID: "12"
+        Items: null
+        Message: "The --rotate-certificates setting causes the kubelet to rotate its
+          client certificates by creating new CSRs as its existing credentials expire.
+          \nThis automated periodic rotation ensures that the there are no downtimes
+          due to expired certificates and thus addressing availability in the CIA
+          security triad.\n"
+        Recommendation: |-
+          If using a Kubelet config file, edit the file to add the line rotateCertificates: true.
+          If using command line arguments, edit the kubelet service file $kubeletconf on each worker node and add --rotate-certificates=true argument to the KUBELET_CERTIFICATE_ARGS variable.
+          Based on your system, restart the kubelet service. For example:
+          systemctl daemon-reload
+          systemctl restart kubelet.service
+        Requirements:
+        - '{{ JmespathBoolQuery  "to_string(rotateCertificates) != ''false''" }}'
+        Severity: High
+        Title: Ensure that the --rotate-certificates argument is not set to false
+          (CIS 2.1.12 Scored)
+      - Action: Alert
+        ID: "13"
+        Items: null
+        Recommendation: |-
+          Edit the kubelet service file $kubeletconf on each worker node and set the below parameter in KUBELET_CERTIFICATE_ARGS variable.
+          --feature-gates=RotateKubeletServerCertificate=true Based on your system, restart the kubelet service. For example:
+          systemctl daemon-reload
+          systemctl restart kubelet.service
+        References:
+        - https://kubernetes.io/docs/admin/kubelet-tls-bootstrapping/#kubelet-configuration
+        Requirements:
+        - '{{ JmespathBoolQuery  "to_string(featureGates.RotateKubeletServerCertificate)
+          == ''true''" }}'
+        Severity: High
+        Title: Ensure that the RotateKubeletServerCertificate argument is set to true
+          (CIS 2.1.13 Scored)
+      - Action: Alert
+        ID: "14"
+        Items: null
+        Message: "TLS ciphers have had a number of known vulnerabilities and weaknesses,
+          \nwhich can reduce the protection provided by them. \nBy default Kubernetes
+          supports a number of TLS ciphersuites including some that have security
+          concerns, weakening the protection provided.\n"
+        Recommendation: "      \nIf using a Kubelet config file, edit the file to
+          set \nTLSCipherSuites: to \nTLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,\nTLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,\nTLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,\nTLS_RSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_128_GCM_SHA256
+          \nIf using executable arguments, edit the kubelet service file /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+          on each worker node and set the below parameter. \n--tls-cipher-suites=TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,\nTLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,\nTLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,\nTLS_RSA_WITH_AES_256_GCM_SHA384,TLS_RSA_WITH_AES_128_GCM_SHA256\n"
+        References:
+        - https://kubernetes.io/docs/admin/kubelet-tls-bootstrapping/#kubelet-configuration
+        Requirements:
+        - '{{ JmespathBoolQuery  "to_string(tlsCipherSuites) != ''null'' && (tlsCipherSuites
+          | sort(@) | join('','',@)) == ''TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_RSA_WITH_AES_128_GCM_SHA256,TLS_RSA_WITH_AES_256_GCM_SHA384''"
+          }}'
+        Severity: High
+        Title: Ensure that the Kubelet only makes use of Strong Cryptographic Ciphers
+          (CIS 2.1.14 Not Scored)
+      GroupID: "1"
+      ResourceSelector: '{{  KubeListKubeletConfig }}'
+      Title: Kubelet Checks (Kubernetes CIS Benchmark)
+    ID: cis.2
+    Items: null
+    Platform: Kubernetes
+    PreRequisites:
+    - '{{ IsLiveCluster }}'
+    - '{{ VersionAtLeast  "v1.11.0" }}'
+    ReportPassedChecks: true
+    Title: Kubernetes CIS Benchmark
+    Type: CIS
+  - ConfigItems: null
+    Groups:
+    - Checks:
+      - Action: Alert
+        ID: "1"
+        Items: null
+        Message: '''{{ KubeResourceDescription }}'', The desired replication level
+          ({{ JmespathStringQuery "to_string(spec.replicas)" }}) is not equal to the
+          actual replication level ({{ JmespathStringQuery "to_string(status.replicas)"
+          }})'
+        OverrideAnnotation: advisor.policy.alcide.io/skip-deployment-health-validation
+        Recommendation: Run the command and look for any pod restarts, or resource
+          scheduling gaps that prevents from Pod to get deployed on cluster worker
+          nodes
+        References:
+        - https://kubernetes.io/docs/concepts/workloads/controllers/deployment/#deployment-status
+        Requirements:
+        - '{{ JmespathBoolQuery  "spec.replicas == status.replicas" }}'
+        Severity: High
+        Title: Verify Deployment Expected and Desired Replication Levels Match
+      GroupID: "1"
+      ResourceSelector: '{{  KubeListResources "" "" "Deployment" "" "" ""}}'
+      Title: Deployment Health
+    - Checks:
+      - Action: Alert
+        ID: "1"
+        Items: null
+        Message: '''{{ KubeResourceDescription }}'', had restarts since it started
+          to run'
+        OverrideAnnotation: advisor.policy.alcide.io/skip-pod-restart-validation
+        Recommendation: Run the command and examine the containerStatuses and initContainerStatuses
+          to get additional symptoms information
+        References:
+        - https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-states
+        Requirements:
+        - '{{ JmespathBoolQuery  "to_string(length(status.containerStatuses[? to_string(restartCount)
+          != ''0''])) == ''0''" }}'
+        - "{{ $hasInitContainers := JmespathStringQuery \"to_string(spec.initContainers
+          != null)\" }}\n\t\t\t\t\t     {{ if eq $hasInitContainers \"true\" }}\n\t\t\t\t\t\t\t{{
+          JmespathBoolQuery  \"to_string(length(status.initContainerStatuses[? to_string(restartCount)
+          != '0'])) == '0'\" }}\n\t\t\t\t\t\t {{ else}}\n\t\t\t\t\t\t\ttrue\n\t\t\t\t\t\t
+          {{ end }}"
+        Severity: High
+        Title: Verify Pod Restarts & Failures
+      GroupID: "2"
+      ResourceSelector: '{{  KubeListResources "" "" "Pod" "" "" ""}}'
+      Title: Pod Failures
+    - Checks:
+      - Action: Alert
+        ID: "1"
+        Items: null
+        Message: '''{{ KubeResourceDescription }}'', The desired replication level
+          ({{ JmespathStringQuery "to_string(status.desiredNumberScheduled)" }}) is
+          not equal to the actual replication level ({{ JmespathStringQuery "to_string(status.numberReady)"
+          }})'
+        OverrideAnnotation: advisor.policy.alcide.io/skip-daemonset-health-validation
+        Recommendation: Run the command and look for any pod restarts, or resource
+          scheduling gaps that prevents from DaemonSet pods to get deployed on cluster
+          worker nodes
+        References:
+        - https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/#how-daemon-pods-are-scheduled
+        Requirements:
+        - '{{ JmespathBoolQuery  "status.numberReady == status.desiredNumberScheduled"
+          }}'
+        Severity: High
+        Title: Verify DaemonSet Expected and Desired Replication Levels Match
+      GroupID: "3"
+      ResourceSelector: '{{  KubeListResources "" "" "DaemonSet" "" "" ""}}'
+      Title: DaemonSet Health
+    - Checks:
+      - Action: Alert
+        ID: "1"
+        Items: null
+        Message: '''{{ KubeResourceDescription }}'', The desired replication level
+          ({{ JmespathStringQuery "to_string(spec.replicas)" }}) is not equal to the
+          actual replication level ({{ JmespathStringQuery "to_string(status.readyReplicas)"
+          }})'
+        OverrideAnnotation: advisor.policy.alcide.io/skip-statefulsets-health-validation
+        Recommendation: Run the command and look for any pod restarts, or resource
+          scheduling gaps that prevents from StatefulSet pods to get deployed on cluster
+          worker nodes
+        References:
+        - https://kubernetes.io/docs/concepts/workloads/controllers/statefulset
+        Requirements:
+        - '{{ JmespathBoolQuery  "spec.replicas == status.readyReplicas" }}'
+        Severity: High
+        Title: Verify StatefulSet Expected and Desired Replication Levels Match
+      GroupID: "4"
+      ResourceSelector: '{{  KubeListResources "" "" "StatefulSet" "" "" ""}}'
+      Title: StatefulSet Health
+    ID: hlth.1
+    Items: null
+    Platform: Kubernetes
+    PreRequisites:
+    - '{{  IsLiveCluster }}'
+    Title: Ops Health
+    Type: Ops Health
+  - ConfigItems: null
+    Groups:
+    - Checks:
+      - Action: Alert
+        ID: "1"
+        Items: null
+        Message: In all Kubernetes versions prior to v1.10.11, v1.11.5, and v1.12.3,
+          incorrect handling of error responses to proxied upgrade requests in the
+          kube-apiserver allowed specially crafted requests to establish a connection
+          through the Kubernetes API server to backend servers, then send arbitrary
+          requests over the same connection directly to the backend, authenticated
+          with the Kubernetes API server's TLS credentials used to establish the backend
+          connection.
+        Recommendation: Mitigate risk by updating your Cluster components
+        References:
+        - https://www.cvedetails.com/vulnerability-list/vendor_id-15867/Kubernetes.html
+        - https://www.cvedetails.com/cve/CVE-2018-1002105/
+        Requirements:
+        - '{{ KubePatchLevelAtLeast  "v1.10.11" }}'
+        - '{{ KubePatchLevelAtLeast  "v1.11.5" }}'
+        - '{{ KubePatchLevelAtLeast  "v1.12.3" }}'
+        Severity: Critical
+        Title: CVE-2018-1002105 (CVSS 7.5)
+      - Action: Alert
+        ID: "2"
+        Items: null
+        Message: 'In all Kubernetes versions prior to v1.11.8, v1.12.6, and v1.13.4,
+          users that are authorized to make patch requests to the Kubernetes API Server
+          can send a specially crafted patch of type "json-patch" (e.g. ''kubectl
+          patch --type json'' or ''"Content-Type: application/json-patch+json"'')
+          that consumes excessive resources while processing, causing a Denial of
+          Service on the API Server.'
+        Recommendation: Mitigate risk by updating your Cluster components
+        References:
+        - https://www.first.org/cvss/calculator/3.0#CVSS:3.0/AV:N/AC:L/PR:L/UI:N/S:U/C:N/I:N/A:H
+        - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-1002100
+        - https://www.cvedetails.com/vulnerability-list/vendor_id-15867/Kubernetes.html
+        - https://discuss.kubernetes.io/t/kubernetes-security-announcement-v1-11-8-1-12-6-1-13-4-released-to-address-medium-severity-cve-2019-1002100/5147
+        Requirements:
+        - '{{ VersionAtLeast         "v1.11.0" }}'
+        - '{{ KubePatchLevelAtLeast  "v1.11.8" }}'
+        - '{{ KubePatchLevelAtLeast  "v1.12.6" }}'
+        - '{{ KubePatchLevelAtLeast  "v1.13.4" }}'
+        Severity: Medium
+        Title: CVE-2019-1002100 (CVSS 6.5)
+      - Action: Alert
+        ID: "3"
+        Items: null
+        Message: CNI (Container Networking Interface) 0.7.4 has a network firewall
+          misconfiguration which affects Kubernetes. The CNI 'portmap' plugin, used
+          to setup HostPorts for CNI, inserts rules at the front of the iptables nat
+          chains; which take precedence over the KUBE- SERVICES chain. Because of
+          this, the HostPort/portmap rule could match incoming traffic even if there
+          were better fitting, more specific service definition rules like NodePorts
+          later in the chain. The issue is fixed in CNI 0.7.5 and Kubernetes 1.11.9,
+          1.12.7, 1.13.5, and 1.14.0.
+        Recommendation: Upgrade Your Cluster worker nodes
+        References:
+        - https://discuss.kubernetes.io/t/announce-security-release-of-kubernetes-affecting-certain-network-configurations-with-cni-releases-1-11-9-1-12-7-1-13-5-and-1-14-0-cve-2019-9946/5713
+        - https://github.com/kubernetes/kubernetes/pull/75455 22 and https://github.com/containernetworking/plugins/pull/269
+        - https://www.first.org/cvss/calculator/3.0#CVSS:3.0/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:L/A:L
+        - https://kubernetes.io/docs/concepts/configuration/overview/#services
+        Requirements:
+        - '{{ VersionAtLeast         "v1.11.0" }}'
+        - '{{ KubePatchLevelAtLeast  "v1.11.9" }}'
+        - '{{ KubePatchLevelAtLeast  "v1.12.7" }}'
+        - '{{ KubePatchLevelAtLeast  "v1.13.5" }}'
+        - '{{ KubePatchLevelAtLeast  "v1.14.0" }}'
+        Severity: Medium
+        Title: CVE-2019-9946 (CVSS 5.0)
+      GroupID: "1"
+      Title: Kubernetes Master API Server Vulnerability
+    - Checks:
+      - Action: Alert
+        ID: "1"
+        Items: null
+        Message: 'runc through 1.0-rc6, as used in Docker before 18.09.2 and other
+          products, allows attackers to overwrite the host runc binary (and consequently
+          obtain host root access) by leveraging the ability to execute a command
+          as root within one of these types of containers: (1) a new container with
+          an attacker-controlled image, or (2) an existing container, to which the
+          attacker previously had write access, that can be attached with docker exec.
+          This occurs because of file-descriptor mishandling, related to /proc/self/exe.'
+        Recommendation: Update your cluster worker node container runtime to the latest
+          version
+        References:
+        - https://nvd.nist.gov/vuln-metrics/cvss/v3-calculator?name=CVE-2019-5736&vector=AV:L/AC:L/PR:N/UI:R/S:C/C:H/I:H/A:H
+        - https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-5736
+        - https://kubernetes.io/blog/2019/02/11/runc-and-cve-2019-5736/
+        - https://blog.docker.com/2019/02/docker-security-update-cve-2018-5736-and-container-security-best-practices/
+        - https://azure.microsoft.com/en-us/updates/cve-2019-5736-and-runc-vulnerability/
+        Requirements:
+        - "{{ $osImage :=  JmespathStringQuery  \"status.nodeInfo.osImage\"}}\n\t\t\t\t\t\t
+          {{ $kubeletVersion := JmespathStringQuery \"status.nodeInfo.kubeletVersion\"
+          }}\n\t\t\t\t\t \t {{ $containerRuntime :=  JmespathStringQuery  \"status.nodeInfo.containerRuntimeVersion\"}}\n\t\t\t\t\t\t
+          {{ $isDockerPatched := ContainerRuntimePatchLevelAtLeast $containerRuntime
+          \"docker://17.6.2\" \"docker://18.9.2\" \"docker://18.6.3\" \"docker://18.3.1\"
+          \"docker://3.0.4\" }}\n\t\t\t\t\t\t {{ $isDockerRuntime := ContainerRuntimeNameEqual
+          $containerRuntime \"docker\"  }}\n\t\t\t\t\t\t {{ if eq $isDockerRuntime
+          \"false\" }}\n\t\t\t\t\t\t \ttrue\n\t\t\t\t\t\t {{ else }}\n\t\t\t\t\t\t
+          {{ if eq $isDockerPatched \"true\"}}\n\t\t\t\t\t\t \ttrue\n\t\t\t\t\t\t
+          {{ else }}\n\t\t\t\t\t\t {{ if eq $osImage \"Amazon Linux 2\" }}\n\t\t\t\t\t\t\t{{
+          ContainerRuntimePatchLevelAtLeast $containerRuntime \"docker://18.6.1\"
+          }}\n\t\t\t\t\t\t {{ end }}\n \t\t\t\t\t\t {{ if (or (eq $kubeletVersion
+          \"v1.10.12-gke.7\") (eq $kubeletVersion \"v1.11.6-gke.11\") (eq $kubeletVersion
+          \"v1.11.7-gke.4\") (eq $kubeletVersion \"v1.12.5-gke.5\") ) }} \n\t\t\t\t\t\t\t{{
+          ContainerRuntimePatchLevelAtLeast $containerRuntime \"docker://17.3.2\"
+          }}\n\t\t\t\t\t\t {{ end }}\n\t\t\t\t\t\t {{ end }}\n\t\t\t\t\t\t {{ end
+          }}\n\t\t\t\t\t\t "
+        Severity: Critical
+        Title: CVE-2019-5736 (CVSS 8.6)
+      - Action: Alert
+        ID: "2"
+        Items: null
+        Message: It was discovered that the API endpoint behind the 'docker cp' command
+          is vulnerable to a Time Of Check to Time Of Use (TOCTOU) vulnerability in
+          the way it handles symbolic links inside a container. An attacker who has
+          compromised an existing container can cause arbitrary files on the host
+          filesystem to be read/written when an administrator tries to copy a file
+          from/to the container.
+        Recommendation: All versions of docker prior to 18.09.7 contain this vulnerability.
+          Update your cluster worker node container runtime to the latest version
+        References:
+        - https://access.redhat.com/security/cve/cve-2018-15664
+        - https://nvd.nist.gov/vuln/detail/CVE-2018-15664
+        Requirements:
+        - "{{ $containerRuntime :=  JmespathStringQuery  \"status.nodeInfo.containerRuntimeVersion\"}}\n\t\t\t\t\t\t
+          {{ $isDockerRuntime  := ContainerRuntimeNameEqual $containerRuntime \"docker\"
+          \ }}\n\t\t\t\t\t\t {{ if eq $isDockerRuntime \"true\" }}\n\t\t\t\t\t\t \t{{
+          ContainerRuntimePatchLevelAtLeast $containerRuntime \"docker://18.9.7\"
+          }}\n\t\t\t\t\t\t {{ else}}\n\t\t\t\t\t\t\ttrue\n\t\t\t\t\t\t {{ end }}"
+        Severity: High
+        Title: CVE-2018-15664 (CVSS 7.5)
+      - Action: Alert
+        ID: "3"
+        Items: null
+        Message: When a container runs for the first time on a node, it correctly
+          respects the UID set by the container image (e.g. USER in a Dockerfile).
+          However, on the second run, the container will run as UID 0 (aka root) which
+          can be an undesired escalated privilege. Pods that specify an explicit runAsUser
+          are unaffected and continue to work properly. PodSecurityPolicies that force
+          a runAsUser setting are also unaffected and continue to work properly. Pods
+          that specify mustRunAsNonRoot:true will refuse to start the container as
+          uid 0, which can affect availability.
+        Recommendation: Update your cluster worker node container runtime to the latest
+          version, or Set RunAsUser on all pods in the cluster that should not run
+          as root. This is a Security Context feature;
+        References:
+        - https://access.redhat.com/security/cve/cve-2019-11245
+        - https://www.first.org/cvss/calculator/3.0#CVSS:3.0/AV:L/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:L
+        - https://discuss.kubernetes.io/t/security-regression-in-kubernetes-kubelet-v1-13-6-and-v1-14-2-only-cve-2019-11245/6584
+        - https://github.com/kubernetes/kubernetes/issues/78308
+        Requirements:
+        - "{{ $kubeletVersion :=  JmespathStringQuery  \"status.nodeInfo.kubeletVersion\"}}\n
+          \                        {{ $kubeletIsVuln := SemVerEqualOneOf $kubeletVersion
+          \"v1.13.6\" \"v1.14.2\" }}\n  \t\t\t\t\t\t {{ $containerRuntime :=  JmespathStringQuery
+          \ \"status.nodeInfo.containerRuntimeVersion\"}}\n\t\t\t\t\t\t {{ $IsDockerRuntime
+          := ContainerRuntimeNameEqual $containerRuntime \"docker\"  }}\n\t\t\t\t\t
+          \    {{ if eq $kubeletIsVuln \"true\" }}\n\t\t\t\t\t\t\t{{ if eq $IsDockerRuntime
+          \"true\" }}false{{ else }}true{{ end }}\n\t\t\t\t\t\t {{ else}}\n\t\t\t\t\t\t\ttrue\n\t\t\t\t\t\t
+          {{ end }}"
+        Severity: Medium
+        Title: CVE-2019-11245 (CVSS 4.9)
+      GroupID: "2"
+      ResourceSelector: '{{  KubeListResources "" "" "Node" "" "" ""}}'
+      Title: Kubernetes Worker Nodes Vulnerabilities Checks
+    ID: cve.1
+    Items: null
+    Platform: Master
+    PreRequisites:
+    - '{{  IsLiveCluster }}'
+    ReportPassedChecks: true
+    Title: Kubernetes Vulnerabilities Checks
+    Type: Vulnerability Scan
+  - ConfigItems: null
+    Groups:
+    - Checks:
+      - Action: Alert
+        ID: "1"
+        Items: null
+        Message: Worker Nodes with public ip addressed are exposed to internet and
+          often becomes target for malicious scanners looking for misconfigured hosts
+        Recommendation: Deploy your worker nodes with private IP addresses and/or
+          limit network access to the worker node using security groups
+        References:
+        - https://cloud.google.com/kubernetes-engine/docs/how-to/private-clusters
+        Requirements:
+        - '{{ JmespathBoolQuery  "to_string(length(status.addresses[?type==''ExternalIP'']))  ==
+          ''0''" }}'
+        Severity: High
+        Title: Node Public IP Address
+      GroupID: "1"
+      ResourceSelector: '{{  KubeListResources "" "" "Node" "" "" ""}}'
+      Title: Worker Nodes Hardening
+    ID: node.1
+    Items: null
+    Platform: WorkerNode
+    PreRequisites:
+    - '{{  IsLiveCluster }}'
+    Title: Worker Node Security
+    Type: Node Hardening
+  - ConfigItems: null
+    Groups:
+    - Checks:
+      - Action: Alert
+        ID: "17863070297453322948"
+        Items: null
+        Message: Check that the resource exist in accordance to the profile generated
+          from cluster 'minikube' on Fri Aug  2 18:02:59 IDT 2019
+        Recommendation: If the check failed, than the resource 'extensions.DaemonSet
+          alcide/agent-nodelet' doesn't match the observed baseline made against 'minikube'
+          - you may want to update the baseline profile or restore the this environment
+          to match the baseline profile
+        Requirements:
+        - '{{  IsNamespacedResourceExist "extensions" "DaemonSet" "alcide" "agent-nodelet"  }}'
+        - '{{  ConsoleMessage  "Checking that" " extensions.DaemonSet alcide/agent-nodelet
+          " "exist"  }}'
+        Severity: Critical
+        Title: Verify 'extensions.DaemonSet alcide/agent-nodelet' exist
+      - Action: Alert
+        ID: "10826502483292134189"
+        Items: null
+        Message: Check that the resource exist in accordance to the profile generated
+          from cluster 'minikube' on Fri Aug  2 18:02:59 IDT 2019
+        Recommendation: If the check failed, than the resource 'extensions.DaemonSet
+          kube-system/kube-proxy' doesn't match the observed baseline made against
+          'minikube' - you may want to update the baseline profile or restore the
+          this environment to match the baseline profile
+        Requirements:
+        - '{{  IsNamespacedResourceExist "extensions" "DaemonSet" "kube-system" "kube-proxy"  }}'
+        - '{{  ConsoleMessage  "Checking that" " extensions.DaemonSet kube-system/kube-proxy
+          " "exist"  }}'
+        Severity: Critical
+        Title: Verify 'extensions.DaemonSet kube-system/kube-proxy' exist
+      - Action: Alert
+        ID: "7563402223740964284"
+        Items: null
+        Message: Check that the resource exist in accordance to the profile generated
+          from cluster 'minikube' on Fri Aug  2 18:02:59 IDT 2019
+        Recommendation: If the check failed, than the resource 'extensions.Deployment
+          alcide/kubemon' doesn't match the observed baseline made against 'minikube'
+          - you may want to update the baseline profile or restore the this environment
+          to match the baseline profile
+        Requirements:
+        - '{{  IsNamespacedResourceExist "extensions" "Deployment" "alcide" "kubemon"  }}'
+        - '{{  ConsoleMessage  "Checking that" " extensions.Deployment alcide/kubemon
+          " "exist"  }}'
+        Severity: Critical
+        Title: Verify 'extensions.Deployment alcide/kubemon' exist
+      - Action: Alert
+        ID: "913667683762630158"
+        Items: null
+        Message: Check that the resource exist in accordance to the profile generated
+          from cluster 'minikube' on Fri Aug  2 18:02:59 IDT 2019
+        Recommendation: If the check failed, than the resource 'extensions.Deployment
+          default/nginx' doesn't match the observed baseline made against 'minikube'
+          - you may want to update the baseline profile or restore the this environment
+          to match the baseline profile
+        Requirements:
+        - '{{  IsNamespacedResourceExist "extensions" "Deployment" "default" "nginx"  }}'
+        - '{{  ConsoleMessage  "Checking that" " extensions.Deployment default/nginx
+          " "exist"  }}'
+        Severity: Critical
+        Title: Verify 'extensions.Deployment default/nginx' exist
+      - Action: Alert
+        ID: "1587560106988180040"
+        Items: null
+        Message: Check that the resource exist in accordance to the profile generated
+          from cluster 'minikube' on Fri Aug  2 18:02:59 IDT 2019
+        Recommendation: If the check failed, than the resource 'extensions.Deployment
+          kube-system/coredns' doesn't match the observed baseline made against 'minikube'
+          - you may want to update the baseline profile or restore the this environment
+          to match the baseline profile
+        Requirements:
+        - '{{  IsNamespacedResourceExist "extensions" "Deployment" "kube-system" "coredns"  }}'
+        - '{{  ConsoleMessage  "Checking that" " extensions.Deployment kube-system/coredns
+          " "exist"  }}'
+        Severity: Critical
+        Title: Verify 'extensions.Deployment kube-system/coredns' exist
+      - Action: Alert
+        ID: "11502090203704613952"
+        Items: null
+        Message: Check that the resource exist in accordance to the profile generated
+          from cluster 'minikube' on Fri Aug  2 18:02:59 IDT 2019
+        Recommendation: If the check failed, than the resource 'extensions.Deployment
+          kube-system/kubernetes-dashboard' doesn't match the observed baseline made
+          against 'minikube' - you may want to update the baseline profile or restore
+          the this environment to match the baseline profile
+        Requirements:
+        - '{{  IsNamespacedResourceExist "extensions" "Deployment" "kube-system" "kubernetes-dashboard"  }}'
+        - '{{  ConsoleMessage  "Checking that" " extensions.Deployment kube-system/kubernetes-dashboard
+          " "exist"  }}'
+        Severity: Critical
+        Title: Verify 'extensions.Deployment kube-system/kubernetes-dashboard' exist
+      - Action: Alert
+        ID: "10998002618956569238"
+        Items: null
+        Message: Check that the resource exist in accordance to the profile generated
+          from cluster 'minikube' on Fri Aug  2 18:02:59 IDT 2019
+        Recommendation: If the check failed, than the resource 'extensions.Deployment
+          kube-system/tiller-deploy' doesn't match the observed baseline made against
+          'minikube' - you may want to update the baseline profile or restore the
+          this environment to match the baseline profile
+        Requirements:
+        - '{{  IsNamespacedResourceExist "extensions" "Deployment" "kube-system" "tiller-deploy"  }}'
+        - '{{  ConsoleMessage  "Checking that" " extensions.Deployment kube-system/tiller-deploy
+          " "exist"  }}'
+        Severity: Critical
+        Title: Verify 'extensions.Deployment kube-system/tiller-deploy' exist
+      - Action: Alert
+        ID: "6802412661923986624"
+        Items: null
+        Message: Check that the resource exist in accordance to the profile generated
+          from cluster 'minikube' on Fri Aug  2 18:02:59 IDT 2019
+        Recommendation: If the check failed, than the resource '.Pod kube-system/etcd-minikube'
+          doesn't match the observed baseline made against 'minikube' - you may want
+          to update the baseline profile or restore the this environment to match
+          the baseline profile
+        Requirements:
+        - '{{  IsNamespacedResourceExist "" "Pod" "kube-system" "etcd-minikube"  }}'
+        - '{{  ConsoleMessage  "Checking that" " .Pod kube-system/etcd-minikube "
+          "exist"  }}'
+        Severity: Critical
+        Title: Verify '.Pod kube-system/etcd-minikube' exist
+      - Action: Alert
+        ID: "3760177543914646528"
+        Items: null
+        Message: Check that the resource exist in accordance to the profile generated
+          from cluster 'minikube' on Fri Aug  2 18:02:59 IDT 2019
+        Recommendation: If the check failed, than the resource '.Pod kube-system/kube-addon-manager-minikube'
+          doesn't match the observed baseline made against 'minikube' - you may want
+          to update the baseline profile or restore the this environment to match
+          the baseline profile
+        Requirements:
+        - '{{  IsNamespacedResourceExist "" "Pod" "kube-system" "kube-addon-manager-minikube"  }}'
+        - '{{  ConsoleMessage  "Checking that" " .Pod kube-system/kube-addon-manager-minikube
+          " "exist"  }}'
+        Severity: Critical
+        Title: Verify '.Pod kube-system/kube-addon-manager-minikube' exist
+      - Action: Alert
+        ID: "9323141017109688479"
+        Items: null
+        Message: Check that the resource exist in accordance to the profile generated
+          from cluster 'minikube' on Fri Aug  2 18:02:59 IDT 2019
+        Recommendation: If the check failed, than the resource '.Pod kube-system/kube-apiserver-minikube'
+          doesn't match the observed baseline made against 'minikube' - you may want
+          to update the baseline profile or restore the this environment to match
+          the baseline profile
+        Requirements:
+        - '{{  IsNamespacedResourceExist "" "Pod" "kube-system" "kube-apiserver-minikube"  }}'
+        - '{{  ConsoleMessage  "Checking that" " .Pod kube-system/kube-apiserver-minikube
+          " "exist"  }}'
+        Severity: Critical
+        Title: Verify '.Pod kube-system/kube-apiserver-minikube' exist
+      - Action: Alert
+        ID: "14594842771868152113"
+        Items: null
+        Message: Check that the resource exist in accordance to the profile generated
+          from cluster 'minikube' on Fri Aug  2 18:02:59 IDT 2019
+        Recommendation: If the check failed, than the resource '.Pod kube-system/kube-controller-manager-minikube'
+          doesn't match the observed baseline made against 'minikube' - you may want
+          to update the baseline profile or restore the this environment to match
+          the baseline profile
+        Requirements:
+        - '{{  IsNamespacedResourceExist "" "Pod" "kube-system" "kube-controller-manager-minikube"  }}'
+        - '{{  ConsoleMessage  "Checking that" " .Pod kube-system/kube-controller-manager-minikube
+          " "exist"  }}'
+        Severity: Critical
+        Title: Verify '.Pod kube-system/kube-controller-manager-minikube' exist
+      - Action: Alert
+        ID: "3469194661032539079"
+        Items: null
+        Message: Check that the resource exist in accordance to the profile generated
+          from cluster 'minikube' on Fri Aug  2 18:02:59 IDT 2019
+        Recommendation: If the check failed, than the resource '.Pod kube-system/kube-scheduler-minikube'
+          doesn't match the observed baseline made against 'minikube' - you may want
+          to update the baseline profile or restore the this environment to match
+          the baseline profile
+        Requirements:
+        - '{{  IsNamespacedResourceExist "" "Pod" "kube-system" "kube-scheduler-minikube"  }}'
+        - '{{  ConsoleMessage  "Checking that" " .Pod kube-system/kube-scheduler-minikube
+          " "exist"  }}'
+        Severity: Critical
+        Title: Verify '.Pod kube-system/kube-scheduler-minikube' exist
+      - Action: Alert
+        ID: "11402909516573070756"
+        Items: null
+        Message: Check that the resource exist in accordance to the profile generated
+          from cluster 'minikube' on Fri Aug  2 18:02:59 IDT 2019
+        Recommendation: If the check failed, than the resource '.Pod kube-system/storage-provisioner'
+          doesn't match the observed baseline made against 'minikube' - you may want
+          to update the baseline profile or restore the this environment to match
+          the baseline profile
+        Requirements:
+        - '{{  IsNamespacedResourceExist "" "Pod" "kube-system" "storage-provisioner"  }}'
+        - '{{  ConsoleMessage  "Checking that" " .Pod kube-system/storage-provisioner
+          " "exist"  }}'
+        Severity: Critical
+        Title: Verify '.Pod kube-system/storage-provisioner' exist
+      GroupID: "1"
+      Title: Workloads Inventory
+    - Checks:
+      - Action: Alert
+        ID: "2466382409580103972"
+        Items: null
+        Message: Check that the resource exist in accordance to the profile generated
+          from cluster 'minikube' on Fri Aug  2 18:02:59 IDT 2019
+        Recommendation: If the check failed, than the resource '.Service default/kubernetes'
+          doesn't match the observed baseline made against 'minikube' - you may want
+          to update the baseline profile or restore the this environment to match
+          the baseline profile
+        Requirements:
+        - '{{  IsNamespacedResourceExist "" "Service" "default" "kubernetes"  }}'
+        - '{{  ConsoleMessage  "Checking that" " .Service default/kubernetes " "exist"  }}'
+        Severity: Critical
+        Title: Verify '.Service default/kubernetes' exist
+      - Action: Alert
+        ID: "15050099141181075580"
+        Items: null
+        Message: Check that the resource exist in accordance to the profile generated
+          from cluster 'minikube' on Fri Aug  2 18:02:59 IDT 2019
+        Recommendation: If the check failed, than the resource '.Service kube-system/kube-dns'
+          doesn't match the observed baseline made against 'minikube' - you may want
+          to update the baseline profile or restore the this environment to match
+          the baseline profile
+        Requirements:
+        - '{{  IsNamespacedResourceExist "" "Service" "kube-system" "kube-dns"  }}'
+        - '{{  ConsoleMessage  "Checking that" " .Service kube-system/kube-dns " "exist"  }}'
+        Severity: Critical
+        Title: Verify '.Service kube-system/kube-dns' exist
+      - Action: Alert
+        ID: "224567975071508176"
+        Items: null
+        Message: Check that the resource exist in accordance to the profile generated
+          from cluster 'minikube' on Fri Aug  2 18:02:59 IDT 2019
+        Recommendation: If the check failed, than the resource '.Service kube-system/kubernetes-dashboard'
+          doesn't match the observed baseline made against 'minikube' - you may want
+          to update the baseline profile or restore the this environment to match
+          the baseline profile
+        Requirements:
+        - '{{  IsNamespacedResourceExist "" "Service" "kube-system" "kubernetes-dashboard"  }}'
+        - '{{  ConsoleMessage  "Checking that" " .Service kube-system/kubernetes-dashboard
+          " "exist"  }}'
+        Severity: Critical
+        Title: Verify '.Service kube-system/kubernetes-dashboard' exist
+      - Action: Alert
+        ID: "9184390969737527039"
+        Items: null
+        Message: Check that the resource exist in accordance to the profile generated
+          from cluster 'minikube' on Fri Aug  2 18:02:59 IDT 2019
+        Recommendation: If the check failed, than the resource '.Service kube-system/monitoring-prometheus-oper-coredns'
+          doesn't match the observed baseline made against 'minikube' - you may want
+          to update the baseline profile or restore the this environment to match
+          the baseline profile
+        Requirements:
+        - '{{  IsNamespacedResourceExist "" "Service" "kube-system" "monitoring-prometheus-oper-coredns"  }}'
+        - '{{  ConsoleMessage  "Checking that" " .Service kube-system/monitoring-prometheus-oper-coredns
+          " "exist"  }}'
+        Severity: Critical
+        Title: Verify '.Service kube-system/monitoring-prometheus-oper-coredns' exist
+      - Action: Alert
+        ID: "10978869055007910040"
+        Items: null
+        Message: Check that the resource exist in accordance to the profile generated
+          from cluster 'minikube' on Fri Aug  2 18:02:59 IDT 2019
+        Recommendation: If the check failed, than the resource '.Service kube-system/monitoring-prometheus-oper-kube-controller-manager'
+          doesn't match the observed baseline made against 'minikube' - you may want
+          to update the baseline profile or restore the this environment to match
+          the baseline profile
+        Requirements:
+        - '{{  IsNamespacedResourceExist "" "Service" "kube-system" "monitoring-prometheus-oper-kube-controller-manager"  }}'
+        - '{{  ConsoleMessage  "Checking that" " .Service kube-system/monitoring-prometheus-oper-kube-controller-manager
+          " "exist"  }}'
+        Severity: Critical
+        Title: Verify '.Service kube-system/monitoring-prometheus-oper-kube-controller-manager'
+          exist
+      - Action: Alert
+        ID: "14885414258441042681"
+        Items: null
+        Message: Check that the resource exist in accordance to the profile generated
+          from cluster 'minikube' on Fri Aug  2 18:02:59 IDT 2019
+        Recommendation: If the check failed, than the resource '.Service kube-system/monitoring-prometheus-oper-kube-etcd'
+          doesn't match the observed baseline made against 'minikube' - you may want
+          to update the baseline profile or restore the this environment to match
+          the baseline profile
+        Requirements:
+        - '{{  IsNamespacedResourceExist "" "Service" "kube-system" "monitoring-prometheus-oper-kube-etcd"  }}'
+        - '{{  ConsoleMessage  "Checking that" " .Service kube-system/monitoring-prometheus-oper-kube-etcd
+          " "exist"  }}'
+        Severity: Critical
+        Title: Verify '.Service kube-system/monitoring-prometheus-oper-kube-etcd'
+          exist
+      - Action: Alert
+        ID: "8310885296327371305"
+        Items: null
+        Message: Check that the resource exist in accordance to the profile generated
+          from cluster 'minikube' on Fri Aug  2 18:02:59 IDT 2019
+        Recommendation: If the check failed, than the resource '.Service kube-system/monitoring-prometheus-oper-kube-scheduler'
+          doesn't match the observed baseline made against 'minikube' - you may want
+          to update the baseline profile or restore the this environment to match
+          the baseline profile
+        Requirements:
+        - '{{  IsNamespacedResourceExist "" "Service" "kube-system" "monitoring-prometheus-oper-kube-scheduler"  }}'
+        - '{{  ConsoleMessage  "Checking that" " .Service kube-system/monitoring-prometheus-oper-kube-scheduler
+          " "exist"  }}'
+        Severity: Critical
+        Title: Verify '.Service kube-system/monitoring-prometheus-oper-kube-scheduler'
+          exist
+      - Action: Alert
+        ID: "10468365866894630285"
+        Items: null
+        Message: Check that the resource exist in accordance to the profile generated
+          from cluster 'minikube' on Fri Aug  2 18:02:59 IDT 2019
+        Recommendation: If the check failed, than the resource '.Service kube-system/monitoring-prometheus-oper-kubelet'
+          doesn't match the observed baseline made against 'minikube' - you may want
+          to update the baseline profile or restore the this environment to match
+          the baseline profile
+        Requirements:
+        - '{{  IsNamespacedResourceExist "" "Service" "kube-system" "monitoring-prometheus-oper-kubelet"  }}'
+        - '{{  ConsoleMessage  "Checking that" " .Service kube-system/monitoring-prometheus-oper-kubelet
+          " "exist"  }}'
+        Severity: Critical
+        Title: Verify '.Service kube-system/monitoring-prometheus-oper-kubelet' exist
+      - Action: Alert
+        ID: "4699367392108221376"
+        Items: null
+        Message: Check that the resource exist in accordance to the profile generated
+          from cluster 'minikube' on Fri Aug  2 18:02:59 IDT 2019
+        Recommendation: If the check failed, than the resource '.Service kube-system/tiller-deploy'
+          doesn't match the observed baseline made against 'minikube' - you may want
+          to update the baseline profile or restore the this environment to match
+          the baseline profile
+        Requirements:
+        - '{{  IsNamespacedResourceExist "" "Service" "kube-system" "tiller-deploy"  }}'
+        - '{{  ConsoleMessage  "Checking that" " .Service kube-system/tiller-deploy
+          " "exist"  }}'
+        Severity: Critical
+        Title: Verify '.Service kube-system/tiller-deploy' exist
+      GroupID: "2"
+      Title: Services Inventory
+    - Checks: []
+      GroupID: "3"
+      Title: Ingress Inventory
+    - Checks: []
+      GroupID: "4"
+      Title: Mutating Admission Controllers Inventory
+    ID: kform
+    Items: null
+    Platform: Kubernetes
+    ReportPassedChecks: true
+    Title: K8S Application Formation
+    Type: KubeFormation
+  - ConfigItems: null
+    Groups:
+    - Checks:
+      - Action: Alert
+        ConfigDescriptor:
+          Placeholder: Enter the registry URL to whitelist
+          Title: Whitelist Registries
+          Type: ImageRegistryURL
+          Value: Registry
+        ID: "1"
+        Items:
+        - Description: Image Repositry used on 'minikube'
+          Item: docker.io/library/nginx
+        - Description: Image Repositry used on 'minikube'
+          Item: gcr.io/dcvisor-162009/alcide/dcvisor/kubemon
+        - Description: Image Repositry used on 'minikube'
+          Item: gcr.io/dcvisor-162009/alcide/dcvisor/nodelet
+        - Description: Image Repositry used on 'minikube'
+          Item: gcr.io/k8s-minikube/storage-provisioner
+        - Description: Image Repositry used on 'minikube'
+          Item: gcr.io/kubernetes-helm/tiller
+        - Description: Image Repositry used on 'minikube'
+          Item: k8s.gcr.io/coredns
+        - Description: Image Repositry used on 'minikube'
+          Item: k8s.gcr.io/etcd
+        - Description: Image Repositry used on 'minikube'
+          Item: k8s.gcr.io/kube-addon-manager
+        - Description: Image Repositry used on 'minikube'
+          Item: k8s.gcr.io/kube-apiserver
+        - Description: Image Repositry used on 'minikube'
+          Item: k8s.gcr.io/kube-controller-manager
+        - Description: Image Repositry used on 'minikube'
+          Item: k8s.gcr.io/kube-proxy
+        - Description: Image Repositry used on 'minikube'
+          Item: k8s.gcr.io/kube-scheduler
+        - Description: Image Repositry used on 'minikube'
+          Item: k8s.gcr.io/kubernetes-dashboard-amd64
+        MandatoryConfigItems: true
+        Message: Verify that the container image(s) used by '{{ KubeResourceDescription
+          }}' provisioned from whitelisted registries - '{{ AdditionalInfo }}'
+        OverrideAnnotation: advisor.policy.alcide.io/skip-image-registry-whitelist
+        Recommendation: Add the image registries to the scan profile or push the images
+          to one of the whitelisted registry
+        References:
+        - https://kubernetes.io/docs/concepts/containers/images
+        Requirements:
+        - '{{ MatchPodImages   .Check.Config }}'
+        Severity: Critical
+        Title: Container Image Registry Supply Chain Hygiene
+      GroupID: "1"
+      ResourceSelector: '{{  KubeListPodSpecs "" "" "" ""}}'
+      Title: Image Registry Whitelist
+    ID: sply.1
+    Items: null
+    Platform: Kubernetes
+    Title: Workload Software Supply Chain
+    Type: Cluster
+  - ConfigItems: null
+    Groups:
+    - Checks:
+      - Action: Alert
+        ID: "1"
+        Items: null
+        Message: a way to integrate our new Kubernetes applications with Amazon Identity
+          and Access Management (IAM) to ensure we could use per-application credentials
+          with IAM Roles
+        Recommendation: Configure kiam to correctly assign AWS IAM roles to pods running
+          in your AWS Kubernetes cluster
+        References:
+        - https://github.com/uswitch/kiam
+        - https://medium.com/@pingles/kiam-iterating-for-security-and-reliability-5e793ab93ec3
+        Requirements:
+        - '{{ IsNamespacedResourceExist "apps" "DaemonSet" "" "kiam"}}'
+        Severity: High
+        Title: Ensure Kiam deployed
+      GroupID: "1"
+      Title: Ensure IAM role pod delegation on AWS Kubernetes cluster
+    ID: iam.1
+    Items: null
+    Platform: EKS
+    PreRequisites:
+    - '{{  IsCloudProviderEqual "aws" }}'
+    Title: AWS IAM Delegation
+    Type: Cloud Provider
+  - ConfigItems: null
+    Groups:
+    - Checks:
+      - Action: Alert
+        ConfigDescriptor:
+          Placeholder: Enter the required label
+          Title: Pod Labels
+          Type: string
+          Value: Label
+        ID: "1"
+        Items:
+        - Description: Make sure resource has 'app' label
+          Item: app
+        - Description: Make sure resource has 'version' label
+          Item: version
+        MandatoryConfigItems: true
+        Message: '''{{ KubeResourceDescription }}'', is missing one or more required
+          label(s) - {{ AdditionalInfo }}'
+        OverrideAnnotation: advisor.policy.alcide.io/skip-labeling-validation
+        Recommendation: Add the missing label(s) to resource manifest or add the resource
+          to the skip list
+        Requirements:
+        - '{{ ForEachConfigJmespathBoolQuery  "to_string(metadata.labels.__ITEM__)     !=
+          ''null''" }}'
+        Severity: Low
+        SkipResource:
+        - '*/kube-system/*'
+        - DaemonSet/alcide/agent-nodelet
+        - Deployment/alcide/kubemon
+        - Deployment/default/nginx
+        Title: Pod Labels Conformance
+      - Action: Allow
+        ConfigDescriptor:
+          Placeholder: Enter the required label
+          Title: Pod Labels
+          Type: string
+          Value: Label
+        ID: "2"
+        Items:
+        - Description: Ensure resource carry the Prometheus Operator annotation
+          Item: prometheus.io/scrape
+        MandatoryConfigItems: true
+        Message: '''{{ KubeResourceDescription }}'', is missing one or more required
+          annotation(s) - {{ AdditionalInfo }}'
+        OverrideAnnotation: advisor.policy.alcide.io/skip-annotations-validation
+        Recommendation: Add the missing annotation(s) to resource manifest or add
+          the resource to the skip list
+        Requirements:
+        - '{{ ForEachConfigJmespathBoolQuery  "to_string(metadata.annotations.\"__ITEM__\")     !=
+          ''null''" }}'
+        Severity: Low
+        SkipResource:
+        - '*/kube-system/*'
+        Title: Pod Annotations Conformance
+      GroupID: "1"
+      ResourceSelector: '{{  KubeListPodSpecs "" "" "" ""}}'
+      Title: Workload Conformance
+    - Checks:
+      - Action: Alert
+        ConfigDescriptor:
+          Placeholder: Enter the required label
+          Title: Pod Labels
+          Type: string
+          Value: Label
+        ID: "1"
+        Items:
+        - Description: Ensure resource has the designated Prometheus Operator annotation
+          Item: prometheus.io/scrape
+        MandatoryConfigItems: true
+        Message: '''{{ KubeResourceDescription }}'', is missing one or more required
+          labels(s) - {{ AdditionalInfo }}'
+        Recommendation: Add the missing annotation(s) to resource manifest or add
+          the resource to the skip list
+        Requirements:
+        - '{{ ForEachConfigJmespathBoolQuery  "to_string(metadata.labels.\"__ITEM__\")     !=
+          ''null''" }}'
+        Severity: Medium
+        SkipResource:
+        - '*/kube-system/*'
+        - Service/default/kubernetes
+        Title: Service Labels Conformance
+      GroupID: "2"
+      ResourceSelector: '{{  KubeListResources "" "" "Service" "" "" ""}}'
+      Title: Service Conformance
+    ID: hygn.1
+    Items: null
+    Platform: Kubernetes
+    Title: Cluster Conformance
+    Type: Cluster Conformance
+  - ConfigItems: null
+    Groups:
+    - Checks:
+      - Action: Alert
+        ID: "1"
+        Items: null
+        Message: '''{{ KubeResourceDescription }}'', is missing at least one Liveness
+          Probe - {{ AdditionalInfo }}'
+        OverrideAnnotation: advisor.policy.alcide.io/skip-liveness-probe-validation
+        Recommendation: Configure liveness probe for your pod containers to ensure
+          Pod liveness is managed and monitored by Kubernetes
+        References:
+        - https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+        Requirements:
+        - '{{ JmespathBoolQuery  "to_string(length(spec.containers[? livenessProbe]))
+          != ''0'' " }}'
+        Severity: Medium
+        SkipResource:
+        - '*/kube-system/*'
+        - DaemonSet/alcide/agent-nodelet
+        - Deployment/alcide/kubemon
+        - Deployment/default/nginx
+        Title: Liveness Probe Configured
+      - Action: Alert
+        ID: "2"
+        Items: null
+        Message: '''{{ KubeResourceDescription }}'', is missing at least one Liveness
+          Probe - {{ AdditionalInfo }}'
+        OverrideAnnotation: advisor.policy.alcide.io/skip-readiness-probe-validation
+        Recommendation: Configure readiness probe for your pod containers to ensure
+          Pod enter a ready state at the right time and stage
+        References:
+        - https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle#container-probes
+        Requirements:
+        - '{{ JmespathBoolQuery  "to_string(length(spec.containers[? readinessProbe]))
+          != ''0'' " }}'
+        Severity: Medium
+        SkipResource:
+        - '*/kube-system/*'
+        - DaemonSet/alcide/agent-nodelet
+        - Deployment/alcide/kubemon
+        - Deployment/default/nginx
+        Title: Readiness Probe Configured
+      GroupID: "1"
+      ResourceSelector: '{{  KubeListPodSpecs "" "" "" ""}}'
+      Title: Workload Readiness & Liveness
+    - Checks:
+      - Action: Alert
+        ID: "1"
+        Items: null
+        Message: '''{{ KubeResourceDescription }}'', is missing CPU request and/or
+          limits definitions'
+        OverrideAnnotation: advisor.policy.alcide.io/skip-cpu-request-validation
+        Recommendation: Configure CPU limit & CPU request to help Kubernetes scheduler
+          have better resource centeric scheduling decisions
+        References:
+        - https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
+        Requirements:
+        - '{{ JmespathBoolQuery  "to_string(length(spec.containers[? resources.limits.cpu]))   !=
+          ''0'' " }}'
+        - '{{ JmespathBoolQuery  "to_string(length(spec.containers[? resources.requests.cpu]))
+          != ''0'' " }}'
+        Severity: Medium
+        SkipResource:
+        - '*/kube-system/*'
+        - DaemonSet/alcide/agent-nodelet
+        - Deployment/alcide/kubemon
+        - Deployment/default/nginx
+        Title: CPU Limit & Request
+      - Action: Alert
+        ID: "2"
+        Items: null
+        Message: '''{{ KubeResourceDescription }}'', is missing Memory request and/or
+          limits definitions'
+        OverrideAnnotation: advisor.policy.alcide.io/skip-memory-request-validation
+        Recommendation: Configure memory limit & memory request to help Kubernetes
+          scheduler have better resource centeric scheduling decisions
+        References:
+        - https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/
+        Requirements:
+        - '{{ JmespathBoolQuery  "to_string(length(spec.containers[? resources.limits.memory]))   !=
+          ''0'' " }}'
+        - '{{ JmespathBoolQuery  "to_string(length(spec.containers[? resources.requests.memory]))
+          != ''0'' " }}'
+        Severity: Medium
+        SkipResource:
+        - '*/kube-system/*'
+        - DaemonSet/alcide/agent-nodelet
+        - Deployment/alcide/kubemon
+        - Deployment/default/nginx
+        Title: Memory Limit & Request
+      GroupID: "2"
+      ResourceSelector: '{{  KubeListPodSpecs "" "" "" ""}}'
+      Title: Workload Capacity Planning
+    ID: dops.1
+    Items: null
+    Platform: Kubernetes
+    Title: Ops Conformance
+    Type: Ops Conformance
+  - ConfigItems: null
+    Groups:
+    - Checks:
+      - Action: Alert
+        ID: "1"
+        Items: null
+        Message: "Etcd is a distributed key value store that provides a reliable way
+          to store data across a cluster of machines. \nThe etcd Operater creates
+          and maintains highly-available etcd clusters on Kubernetes, allowing engineers
+          to easily deploy and manage etcd clusters for their applications."
+        Recommendation: Configure ServiceMonitor endpoints with either TLS configuration
+          or Token bearer. Leaving your metrics endpoints exposed without authentication
+          enables adversary to learn about the inner working of your workloads.
+        References:
+        - https://github.com/coreos/etcd-operator
+        - https://github.com/coreos/etcd-operator/blob/master/doc/user/cluster_tls.md
+        - https://coreos.com/operators/etcd/docs/latest/
+        Requirements:
+        - '{{ JmespathBoolQuery  "spec.TLS.static.operatorSecret != '''' " }}'
+        - '{{ JmespathBoolQuery  "spec.TLS.static.member.peerSecret != '''' " }}'
+        - '{{ JmespathBoolQuery  "spec.TLS.static.member.serverSecret != '''' " }}'
+        Severity: High
+        Title: Check Etcd Cluster is configured with TLS
+      GroupID: "1"
+      ResourceSelector: '{{  KubeListResources "database.coreos.com" "" "EtcdCluster"
+        "" "" ""}}'
+      Title: Etcd Cluster
+    ID: etcd.1
+    Items: null
+    Platform: Etcd
+    PreRequisites:
+    - '{{  IsResourceExist "apiextensions.k8s.io" "CustomResourceDefinition" "etcd.database.coreos.com"  }}'
+    ReportPassedChecks: true
+    Title: Etcd Operator
+    Type: Operators
+  - ConfigItems: null
+    Groups:
+    - Checks:
+      - Action: Alert
+        ID: "1"
+        Items: null
+        Message: |-
+          The Prometheus Operator for Kubernetes provides easy monitoring definitions for Kubernetes services and deployment along with management of Prometheus instances.
+          ServiceMonitor declaratively specifies how groups of services should be monitored. The Operator automatically generates Prometheus scrape configuration based on the ServiceMonitor definition.
+          Scrape configuration has multiple options
+        Recommendation: Configure ServiceMonitor endpoints with either TLS configuration
+          or Token bearer. Leaving your metrics endpoints exposed without authentication
+          enables adversary to learn about the inner working of your workloads.
+        References:
+        - https://github.com/coreos/prometheus-operator
+        - https://github.com/coreos/prometheus-operator/blob/master/Documentation/api.md#endpoint
+        - https://prometheus.io/docs/prometheus/latest/configuration/configuration
+        Requirements:
+        - '{{ JmespathBoolQuery  "to_string(length(spec.endpoints[?(bearerTokenFile
+          != \"\" || tlsConfig.caFile != \"\")])) != ''0'' " }}'
+        Severity: High
+        Title: Check Prometheus ServiceMonitors scrape from gated endpoints
+      GroupID: "1"
+      ResourceSelector: '{{  KubeListResources "monitoring.coreos.com" "" "ServiceMonitor"
+        "" "" ""}}'
+      Title: Prometheus ServiceMonitors
+    ID: prom.1
+    Items: null
+    Platform: Prometheus
+    PreRequisites:
+    - '{{  IsResourceExist "apiextensions.k8s.io" "CustomResourceDefinition" "prometheuses.monitoring.coreos.com"}}'
+    ReportPassedChecks: true
+    Title: Promtheus Operator
+    Type: Operators
+  - ConfigItems: null
+    Groups:
+    - Checks:
+      - Action: Alert
+        ID: "1"
+        Items: null
+        Message: You can secure an ingress by specifying a secret that contains a
+          TLS private key and certificate.
+        OverrideAnnotation: advisor.policy.alcide.io/skip-ingress-controller-tls-checks
+        Recommendation: Configure your ingress controller to accept encrypted requests
+          using TLS.
+        References:
+        - https://kubernetes.io/docs/concepts/services-networking/ingress/#tls
+        Requirements:
+        - '{{ JmespathBoolQuery  "to_string(spec.tls) != ''null'' && to_string(spec.rules)
+          != ''null'' && sort(spec.tls[].hosts[]) == sort(spec.rules[].host)" }}'
+        Severity: High
+        Title: Ensure that the Ingress specification contains TLS configuration and
+          secret name
+      - Action: Alert
+        ID: "2"
+        Items: null
+        Message: Your ingress
+        OverrideAnnotation: advisor.policy.alcide.io/skip-ingress-controller-sources-check
+        Recommendation: Ingress Controller are gateways into cluster services. You
+          should limit the sources from which cluster services can be accessed from
+          by specifying allowed client IP source ranges
+        References:
+        - https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md#whitelist-source-range
+        Requirements:
+        - '{{ JmespathBoolQuery  "to_string(metadata.annotations.\"ingress.kubernetes.io/whitelist-source-range\")
+          != ''null''" }}'
+        Severity: High
+        Title: Ensure that Ingress Controllers limit the range of client network sources
+      GroupID: "1"
+      ResourceSelector: '{{  KubeListResources "extensions" "" "Ingress" "" "" ""}}'
+      Title: Ingress Security & Hardening Configuration
+    - Checks:
+      - Action: Alert
+        ID: "1"
+        Items: null
+        Message: Access logs are enabled by default, but in some scenarios access
+          logs might be required to be disabled for a given ingress.
+        OverrideAnnotation: advisor.policy.alcide.io/skip-nginx-ingress-controller-access-log-config
+        Recommendation: Enable your Ingress Controller access logging for audit purpose.
+        References:
+        - https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md#enable-access-log
+        Requirements:
+        - '{{ JmespathBoolQuery  "to_string(metadata.annotations.[\"nginx.ingress.kubernetes.io/enable-access-log\"])
+          != ''false''" }}'
+        Severity: High
+        Title: Ensure that Ingress Controller access logs are enabled for audit trace.
+      - Action: Alert
+        ID: "2"
+        Items: null
+        Message: Rewrite logs are not enabled by default. In some scenarios it could
+          be required to enable NGINX rewrite logs. Note that rewrite logs are sent
+          to the error_log file at the notice level.
+        OverrideAnnotation: advisor.policy.alcide.io/skip-nginx-ingress-controller-rewrite-config
+        Recommendation: Configure your ingress controller log access for audit purpose.
+        References:
+        - https://github.com/kubernetes/ingress-nginx/blob/master/docs/user-guide/nginx-configuration/annotations.md#enable-rewrite-log
+        Requirements:
+        - '{{ JmespathBoolQuery  "to_string(metadata.annotations.[\"nginx.ingress.kubernetes.io/enable-rewrite-log\"])
+          != ''true''" }}'
+        Severity: High
+        Title: Ensure that Ingress Controller access logs rewrite is disabled
+      GroupID: "2"
+      ResourceSelector: '{{  KubeListResources "extensions" "" "Ingress" "" "" ""}}'
+      Title: 'Ingress Controller (nginx) '
+    - Checks:
+      - Action: Alert
+        ID: "1"
+        Items: null
+        Message: Setting the type field to LoadBalancer will provision a load balancer
+          for Service on cloud providers which support external load balancers. Such
+          resources ingest traffic into the cluster - on ports {{ JmespathStringQuery
+          "to_string(spec.ports[].port)"}}
+        OverrideAnnotation: advisor.policy.alcide.io/skip-load-balancer-service-checks
+        Recommendation: Configure the loadBalancerSourceRanges, otherwise, Kubernetes
+          will allow traffic from 0.0.0.0/0 to the Node Security Group(s). If nodes
+          have public IP addresses, be aware that non-NLB traffic can also reach all
+          instances in those modified security groups.
+        References:
+        - https://kubernetes.io/docs/concepts/services-networking/
+        - https://kubernetes.io/docs/concepts/services-networking/#loadbalancer
+        Requirements:
+        - '{{ JmespathBoolQuery  "to_string(spec.type == ''LoadBalancer'') == ''false''
+          || to_string(spec.loadBalancerSourceRanges) != ''null'' && to_string(length(spec.loadBalancerSourceRanges))
+          != ''0''" }}'
+        Severity: High
+        Title: LoadBalancer Services
+      GroupID: "3"
+      ResourceSelector: '{{  KubeListResources "" "" "Service" "" "" ""}}'
+      Title: Service Resource Checks
+    ID: ingr.1
+    Items: null
+    Platform: Ingress
+    Title: Ingress Controllers & Services
+    Type: Ingress Network
+  - ConfigItems: null
+    Groups:
+    - Checks:
+      - Action: Alert
+        ID: "1"
+        Items: null
+        Message: '''{{ KubeResourceDescription }}'', Modifying the default Pod namespace
+          isolation allows the processes in a pod to run as if they were running natively
+          on the host.'
+        OverrideAnnotation: advisor.policy.alcide.io/allow-host-namespace
+        Recommendation: Set the following Pod attributes 'hostNetwork', 'hostIPC',
+          'hostPID' to false.
+        References:
+        - https://kubernetes.io/docs/concepts/policy/pod-security-policy/#host-namespaces
+        Requirements:
+        - '{{ JmespathBoolQuery  "!(to_string(spec.hostNetwork) == ''true'')" }}'
+        - '{{ JmespathBoolQuery  "!(to_string(spec.hostIPC)     == ''true'') "}}'
+        - '{{ JmespathBoolQuery  "!(to_string(spec.hostPID)     == ''true'') "}}'
+        Severity: Critical
+        SkipResource:
+        - '*/kube-system/*'
+        - DaemonSet/alcide/agent-nodelet
+        - DaemonSet/*/exporter-node
+        Title: Host Namespace Isolation
+      - Action: Alert
+        ID: "2"
+        Items: null
+        Message: '''{{ KubeResourceDescription }}'', has no Kubernetes network policy
+          applied to it'
+        OverrideAnnotation: advisor.policy.alcide.io/skip-network-policy-validation
+        PreRequisites:
+        - '{{  IsLiveCluster }}'
+        Recommendation: Define Kubernetes Network Policy rules which specify what
+          traffic is allowed to and from the selected pods.
+        References:
+        - https://kubernetes.io/docs/concepts/services-networking/network-policies/
+        Requirements:
+        - '{{ IsNetworkPolicyApplied }}'
+        Severity: High
+        SkipResource:
+        - '*/kube-system/*'
+        - '*/alcide/*'
+        - Deployment/default/nginx
+        Title: Network Policies applied
+      - Action: Alert
+        ID: "3"
+        Items: null
+        Message: "The container(s) '{{ JmespathStringQuery \"join(', ', spec.containers[?
+          to_string(securityContext.privileged) == 'true'].name)\"}}'\n\t\t\t\t\t\t\t
+          \                 {{ $hasInitContainers := JmespathStringQuery \"to_string(spec.initContainers
+          != null)\" }}\n                                             {{ if eq $hasInitContainers
+          \"true\" }}\n                                                  and initContainers:
+          ('{{ JmespathStringQuery \"join(', ', spec.initContainers[? to_string(securityContext.privileged)
+          == 'true'].name)\" }}')\n                                             {{
+          end }} has 'privileged' set to true in the SecurityContext."
+        OverrideAnnotation: advisor.policy.alcide.io/allow-priviliged-pod
+        Recommendation: Set the 'Privileged' attribute in the Pod's container configuration
+          to 'false'
+        References:
+        - https://kubernetes.io/docs/concepts/policy/security-context/
+        Requirements:
+        - '{{ JmespathBoolQuery  "to_string(length(spec.containers[? to_string(securityContext.privileged)
+          == ''true''])) == ''0'' " }}'
+        - "{{ $hasInitContainers := JmespathStringQuery \"to_string(spec.initContainers
+          != null)\" }}\n\t\t\t\t\t     {{ if eq $hasInitContainers \"true\" }}\n\t\t\t\t\t\t\t{{
+          JmespathBoolQuery  \"to_string(length(spec.initContainers[? to_string(securityContext.privileged)
+          == 'true'])) == '0' \" }}\n\t\t\t\t\t\t{{ else}}\n\t\t\t\t\t\t\ttrue\n\t\t\t\t\t\t{{
+          end }}"
+        Severity: Critical
+        SkipResource:
+        - '*/kube-system/*'
+        - DaemonSet/alcide/agent-nodelet
+        - DaemonSet/alcide/local-storage-init
+        - DaemonSet/alcide/local-volume-provisioner
+        Title: Privileged Containers
+      - Action: Alert
+        ID: "4"
+        Items: null
+        Message: '''{{ KubeResourceDescription }}'', mounts host directories that
+          may impose higher risk level to the worker node - ''{{ AdditionalInfo }}'''
+        OverrideAnnotation: advisor.policy.alcide.io/skip-host-path-blacklist-validation
+        Recommendation: Adjust host volume mounts to comply with the blacklist, add
+          an exception for this resource or use PodSecurityPolicy to deny admission
+          for such workloads
+        References:
+        - https://kubernetes.io/docs/concepts/policy/pod-security-policy/
+        Requirements:
+        - '{{ BlacklistedHostMount "/bin"  "read" }}'
+        - '{{ BlacklistedHostMount "/boot" "read" }}'
+        - '{{ BlacklistedHostMount "/dev"  "read" }}'
+        - '{{ BlacklistedHostMount "/etc"  "read" }}'
+        - '{{ BlacklistedHostMount "/home" "read" }}'
+        - '{{ BlacklistedHostMount "/media" "read" }}'
+        - '{{ BlacklistedHostMount "/mnt"  "read" }}'
+        - '{{ BlacklistedHostMount "/opt"  "read" }}'
+        - '{{ BlacklistedHostMount "/proc" "read" }}'
+        - '{{ BlacklistedHostMount "/root" "read" }}'
+        - '{{ BlacklistedHostMount "/run"  "read" }}'
+        - '{{ BlacklistedHostMount "/sbin" "read" }}'
+        - '{{ BlacklistedHostMount "/srv"  "read" }}'
+        - '{{ BlacklistedHostMount "/sys"  "read" }}'
+        - '{{ BlacklistedHostMount "/usr"  "read" }}'
+        - '{{ BlacklistedHostMount "/var/run/docker.sock"     "read" }}'
+        - '{{ BlacklistedHostMount "/var/run/containerd.sock" "read" }}'
+        - '{{ BlacklistedHostMount "/var/run/crio/crio.sock" "read" }}'
+        Severity: Critical
+        SkipResource:
+        - '*/kube-system/*'
+        - DaemonSet/alcide/agent-nodelet
+        - DaemonSet/alcide/local-storage-init
+        - DaemonSet/alcide/local-volume-provisioner
+        - DaemonSet/ops/exporter-node
+        Title: High risk host file system mounts
+      - Action: Alert
+        ID: "5"
+        Items: null
+        Message: "Force Kubernetes to run containers as a non-root user to ensure
+          least privilege - see container(s): '{{ JmespathStringQuery \"join(', ',
+          spec.containers[? to_string(securityContext.runAsNonRoot) == 'null' || to_string(securityContext.runAsNonRoot)
+          == 'false'].name)\" }}'\n\t\t\t\t\t\t\t                  {{ $hasInitContainers
+          := JmespathStringQuery \"to_string(spec.initContainers != null)\" }}\n                                             {{
+          if eq $hasInitContainers \"true\" }}\n                                                  and
+          initContainers: ('{{ JmespathStringQuery \"join(', ', spec.initContainers[?
+          to_string(securityContext.runAsNonRoot) == 'null' || to_string (securityContext.runAsNonRoot)
+          == 'false'].name)\" }}')\n                                             {{
+          end }} "
+        OverrideAnnotation: advisor.policy.alcide.io/skip-run-as-root
+        Recommendation: The attribute indicates whether the container runs as a non-root
+          user. Container level security context settings are applied to the specific
+          container and override settings made at the pod level where there is overlap
+        References:
+        - https://kubernetes.io/docs/concepts/policy/security-context/
+        - https://kubernetes.io/blog/2016/08/security-best-practices-kubernetes-deployment/
+        Requirements:
+        - '{{ JmespathBoolQuery  "to_string(length(spec.containers[? to_string(securityContext.runAsNonRoot)==''false''
+          || to_string(securityContext.runAsNonRoot) == ''null'']) ) == ''0'' " }}'
+        - "{{ $hasInitContainers := JmespathStringQuery \"to_string(spec.initContainers
+          != null)\" }}\n\t\t\t\t\t     {{ if eq $hasInitContainers \"true\" }}\n\t\t\t\t\t\t\t{{
+          JmespathBoolQuery  \"to_string(length(spec.initContainers[? to_string(securityContext.runAsNonRoot)=='false'
+          || to_string(securityContext.runAsNonRoot) == 'null']) ) == '0'  \" }}\n\t\t\t\t\t\t{{
+          else}}\n\t\t\t\t\t\t\ttrue\n\t\t\t\t\t\t{{ end }}"
+        Severity: High
+        SkipResource:
+        - '*/kube-system/*'
+        - DaemonSet/alcide/agent-nodelet
+        - DaemonSet/alcide/local-storage-init
+        - DaemonSet/alcide/local-volume-provisioner
+        - Deployment/alcide/kubemon
+        - Deployment/default/nginx
+        Title: Non-Root Containers
+      - Action: Alert
+        ID: "6"
+        Items: null
+        Message: "An immutable root filesystem can prevent malicious binaries being
+          added or overwrite existing binaries  - container(s): '{{ JmespathStringQuery
+          \"join(', ', spec.containers[? to_string(securityContext.readOnlyRootFilesystem)
+          == 'null' || securityContext.readOnlyRootFilesystem == 'false'].name)\"
+          }}'\n\t\t\t\t\t\t\t                  {{ $hasInitContainers := JmespathStringQuery
+          \"to_string(spec.initContainers != null)\" }}\n                                             {{
+          if eq $hasInitContainers \"true\" }}\n                                                  and
+          initContainers: ('{{ JmespathStringQuery \"join(', ', spec.initContainers[?
+          to_string(securityContext.readOnlyRootFilesystem) == 'null' || securityContext.readOnlyRootFilesystem
+          == false].name)\" }}')\n                                             {{
+          end }} "
+        OverrideAnnotation: advisor.policy.alcide.io/skip-readonly-filesystem
+        Recommendation: An immutable root filesystem prevents applications from writing
+          to their local storage. In an exploit or intrusion event the attacker will
+          not be able to tamper with the local filesystem or write foreign executables
+          to disk
+        References:
+        - https://kubernetes.io/docs/concepts/storage/volumes/#emptydir
+        Requirements:
+        - '{{ JmespathBoolQuery  "to_string(length(spec.containers[? to_string(securityContext.readOnlyRootFilesystem)==''false''
+          || to_string(securityContext.readOnlyRootFilesystem) == ''null'']) ) ==
+          ''0'' " }}'
+        - "{{ $hasInitContainers := JmespathStringQuery \"to_string(spec.initContainers
+          != null)\" }}\n\t\t\t\t\t     {{ if eq $hasInitContainers \"true\" }}\n\t\t\t\t\t\t\t{{
+          JmespathBoolQuery  \"to_string(length(spec.initContainers[? to_string(securityContext.readOnlyRootFilesystem)=='false'
+          || to_string(securityContext.readOnlyRootFilesystem) == 'null']) ) == '0'
+          \" }}\n\t\t\t\t\t\t{{ else}}\n\t\t\t\t\t\t\ttrue\n\t\t\t\t\t\t{{ end }}"
+        Severity: Medium
+        SkipResource:
+        - DaemonSet/alcide/agent-nodelet
+        - DaemonSet/kube-system/kube-proxy
+        - Deployment/alcide/kubemon
+        - Deployment/default/nginx
+        - Deployment/kube-system/kubernetes-dashboard
+        - Deployment/kube-system/tiller-deploy
+        - Pod/kube-system/etcd-minikube
+        - Pod/kube-system/kube-addon-manager-minikube
+        - Pod/kube-system/kube-apiserver-minikube
+        - Pod/kube-system/kube-controller-manager-minikube
+        - Pod/kube-system/kube-scheduler-minikube
+        - Pod/kube-system/storage-provisioner
+        Title: Immutable Containers
+      - Action: Alert
+        ID: "7"
+        Items: null
+        Message: "Set the user id to run the container process. This is the user id
+          of the first process in the container   - container(s): '{{ JmespathStringQuery
+          \"join(', ', spec.containers[? to_string(securityContext.runAsUser) == 'null'].name)\"
+          }}'\n\t\t\t\t\t\t\t                  {{ $hasInitContainers := JmespathStringQuery
+          \"to_string(spec.initContainers != null)\" }}\n                                             {{
+          if eq $hasInitContainers \"true\" }}\n                                                  and
+          initContainers: ('{{ JmespathStringQuery \"join(', ', spec.initContainers[?
+          to_string(securityContext.runAsUser) == 'null'].name)\" }}')\n                                             {{
+          end }} "
+        OverrideAnnotation: advisor.policy.alcide.io/skip-runasuser
+        Recommendation: Set the user id > 10000 and run the container with user id
+          that differ from the host user id
+        References:
+        - https://kubernetes.io/docs/concepts/policy/security-context/
+        Requirements:
+        - '{{ JmespathBoolQuery  "to_string(length(spec.containers[?to_string(securityContext.runAsUser)
+          != ''null''])) == to_string(length(spec.containers[])) " }}'
+        - "{{ $hasInitContainers := JmespathStringQuery \"to_string(spec.initContainers
+          != null)\" }}\n\t\t\t\t\t     {{ if eq $hasInitContainers \"true\" }}\n\t\t\t\t\t\t\t{{
+          JmespathBoolQuery  \"to_string(length(spec.initContainers[?to_string(securityContext.runAsUser)
+          != 'null'])) == to_string(length(spec.initContainers[])) \"}}\n\t\t\t\t\t\t{{
+          else}}\n\t\t\t\t\t\t\ttrue\n\t\t\t\t\t\t{{ end }}"
+        Severity: Medium
+        SkipResource:
+        - DaemonSet/alcide/agent-nodelet
+        - DaemonSet/kube-system/kube-proxy
+        - Deployment/alcide/kubemon
+        - Deployment/default/nginx
+        - Deployment/kube-system/coredns
+        - Deployment/kube-system/kubernetes-dashboard
+        - Deployment/kube-system/tiller-deploy
+        - Pod/kube-system/etcd-minikube
+        - Pod/kube-system/kube-addon-manager-minikube
+        - Pod/kube-system/kube-apiserver-minikube
+        - Pod/kube-system/kube-controller-manager-minikube
+        - Pod/kube-system/kube-scheduler-minikube
+        - Pod/kube-system/storage-provisioner
+        Title: Run Container As User
+      - Action: Allow
+        ID: "8"
+        Items: null
+        Message: '''{{ KubeResourceDescription }}'', has no Pod Security Policy applied
+          to it'
+        OverrideAnnotation: advisor.policy.alcide.io/skip-pod-security-policy-validation
+        PreRequisites:
+        - '{{  IsLiveCluster }}'
+        Recommendation: Define one or more Pod Security Policy and bind them to Pods
+          to define how those pods are deployed into the cluster.
+        References:
+        - https://cloud.google.com/kubernetes-engine/docs/how-to/pod-security-policies
+        - https://kubernetes.io/docs/concepts/policy/pod-security-policy/
+        Requirements:
+        - "{{ $kubeVersionAtLeast := VersionAtLeast \"v1.8.6\" }}\n\t\t\t\t\t\t {{
+          if eq $kubeVersionAtLeast \"true\" }}\n\t\t\t\t\t\t \t{{ IsPodSecurityPolicyApplied
+          }}\n\t\t\t\t\t\t {{ else }}\n\t\t\t\t\t\t \ttrue\n\t\t\t\t\t\t {{ end }}"
+        Severity: High
+        SkipResource:
+        - '*/kube-system/*'
+        - '*/alcide/*'
+        Title: Pod Security Policy applied
+      GroupID: "1"
+      ResourceSelector: '{{  KubeListPodSpecs "" "" "" ""}}'
+      Title: Workload Hardening
+    ID: psec.1
+    Items: null
+    Platform: Pod
+    Title: Pod Security
+    Type: Workload Hardening
+  - ConfigItems: null
+    Groups:
+    - Checks:
+      - Action: Alert
+        ID: "1"
+        Items: null
+        Message: Istio Global Mesh Policy is not configuted with TLS
+        OverrideAnnotation: advisor.policy.alcide.io/skip-istio-global-tls-checks
+        Recommendation: Configure your policy to ensure that all workloads in the
+          mesh will only accept encrypted requests using TLS.
+        References:
+        - https://istio.io/docs/tasks/security/authn-policy
+        Requirements:
+        - '{{ JmespathBoolQuery  "(spec.peers[?mtls.mode==''PERMISSIVE'' || mtls.mode==''DISABLE'']
+          | to_string(length(@)) == ''0'')" }}'
+        Severity: Critical
+        Title: Check Default Global TLS Policy
+      GroupID: "1"
+      ResourceSelector: '{{  KubeListResources "authentication.istio.io" "" "MeshPolicy"
+        "" "" "metadata.name=default"}}'
+      Title: Istio Control Plane Security Checks
+    ID: isto.1
+    Items: null
+    Platform: Istio
+    PreRequisites:
+    - '{{  IsResourceExist "" "Namespace" "istio-system"}}'
+    ReportPassedChecks: true
+    Title: Service Mesh Security
+    Type: Istio
+  - ConfigItems: null
+    Groups:
+    - Checks:
+      - Action: Alert
+        ID: "1"
+        Items: null
+        Message: '''{{ KubeResourceDescription }}'', has read access to secrets, which
+          in some scenarios may be equivalent to being root in the cluster - ''{{
+          AdditionalInfo }}'''
+        OverrideAnnotation: advisor.policy.alcide.io/skip-secret-api-access-validation
+        Recommendation: Review and adjust the RBAC permissions for this resource,
+          or add it to the exception list
+        References:
+        - https://kubernetes.io/docs/reference/access-authn-authz/rbac/
+        Requirements:
+        - '{{ AccessReview  "get" "" "" "secrets" }}'
+        Severity: Critical
+        SkipResource:
+        - '*/kube-system/*'
+        - Deployment/alcide/kubemon
+        Title: Workload Read Secrets from Kubernetes API Server
+      - Action: Alert
+        ID: "2"
+        Items: null
+        Message: '''{{ KubeResourceDescription }}'', has create/update pod permissions,
+          which in some scenarios may be equivalent to being root in the cluster -
+          {{ AdditionalInfo }}'''
+        OverrideAnnotation: advisor.policy.alcide.io/skip-pod-create-api-access-validation
+        Recommendation: Review and adjust the RBAC permissions for this resource,
+          or add it to the exception list
+        References:
+        - https://kubernetes.io/docs/reference/access-authn-authz/rbac/
+        Requirements:
+        - '{{ AccessReview  "create,update" "" "" "pods" }}'
+        Severity: Critical
+        SkipResource:
+        - '*/kube-system/*'
+        Title: Ensure Workloads are not permitted to create or update Pods through
+          Kubernetes API Server
+      GroupID: "1"
+      ResourceSelector: '{{  KubeListPodSpecs "" "" "" ""}}'
+      Title: Privileged Kubernetes API Server Access
+    ID: rbac.1
+    Items: null
+    Platform: Role
+    PreRequisites:
+    - '{{  IsLiveCluster }}'
+    Title: Workload Kubernetes API Server Access Privileges
+    Type: Roles & Permissions
+  - ConfigItems: null
+    Groups:
+    - Checks:
+      - Action: Alert
+        ID: "1"
+        Items: null
+        Message: "Verify Kubernetes Dashboard access permissions level. As of release
+          1.7, Kubernetes Dashboard no longer had full admin privileges granted by
+          default. \nAll the privileges are revoked and only minimal privileges granted,
+          that are required to make Dashboard work."
+        Recommendation: Run your Kubernetes dashboard without admin privileges.
+        References:
+        - https://github.com/kubernetes/dashboard/wiki/Access-control
+        Requirements:
+        - '{{ JmespathBoolQuery  "to_string(length(subjects[?kind==''ServiceAccount''
+          && name==''kubernetes-dashboard''])) == ''0'' " }}'
+        Severity: Critical
+        Title: Check Kubernetes Dashboard Permissions are minimal
+      GroupID: "1"
+      ResourceSelector: '{{  KubeListResources "rbac.authorization.k8s.io" "" "ClusterRoleBinding"
+        "" "" "metadata.name=kubernetes-dashboard"}}'
+      Title: RBAC Permissions
+    - Checks:
+      - Action: Alert
+        ID: "1"
+        Items: null
+        Message: "{{ $info := AdditionalInfo}}{{ if eq $info \"\"}}\n\t\t\t\t\tYour
+          Kubernetes Dashboard runs the correct patch level\n\t\t\t\t\t{{else}}'{{
+          $info }}' is running vulnerable version{{ end }}"
+        Recommendation: Update Your Kubernetes Dashboard to at least version v1.10.1
+        References:
+        - https://github.com/kubernetes/dashboard/releases/tag/v1.10.1
+        - https://groups.google.com/forum/#!topic/kubernetes-announce/yBrFf5nmvfI
+        Requirements:
+        - '{{ PodSpecImageVersionAtLeast "" "k8s.gcr.io/kubernetes-dashboard-arm64"   "v1.10.1"}}'
+        - '{{ PodSpecImageVersionAtLeast "" "k8s.gcr.io/kubernetes-dashboard-amd64"   "v1.10.1"}}'
+        - '{{ PodSpecImageVersionAtLeast "" "k8s.gcr.io/kubernetes-dashboard-ppc64le"
+          "v1.10.1"}}'
+        - '{{ PodSpecImageVersionAtLeast "" "k8s.gcr.io/kubernetes-dashboard-arm"     "v1.10.1"}}'
+        - '{{ PodSpecImageVersionAtLeast "" "k8s.gcr.io/kubernetes-dashboard-s390x"   "v1.10.1"}}'
+        Severity: Critical
+        SkipResource:
+        - Deployment/kube-system/kubernetes-dashboard
+        Title: CVE-2019-5736 (CVSS 8.6)
+      GroupID: "2"
+      ResourceSelector: '{{  KubeListPodSpecs "" "" "" "metadata.name=kubernetes-dashboard"}}'
+      Title: Kubernetes Dashboard Vulnerabilities Checks
+    ID: dash.1
+    Items: null
+    Platform: Kubernetes
+    PreRequisites:
+    - '{{  IsLiveCluster }}'
+    ReportPassedChecks: true
+    Title: Kubernetes Dashboard
+    Type: Kubernetes Adminstration
+  - ConfigItems:
+    - Description: AWS Access Keys
+      Item: (A3T[A-Z0-9]|AKIA|AGPA|AIDA|AROA|AIPA|ANPA|ANVA|ASIA)[A-Z0-9]{16}
+    - Description: AWS Secret Keys
+      Item: (\"|')?(AWS|aws|Aws)?_?(SECRET|secret|Secret)?_?(ACCESS|access|Access)?_?(KEY|key|Key)(\"|')?\s*(:|=>|=)\s*(\"|')?[A-Za-z0-9/\+=]{40}(\"|')?
+    - Description: Private Encryption Key
+      Item: (BEGIN OPENSSH PRIVATE KEY) | (BEGIN PGP PRIVATE KEY BLOCK) | (BEGIN PRIVATE
+        KEY) | (BEGIN RSA PRIVATE KEY) | (BEGIN DSA PRIVATE KEY) | (BEGIN EC PRIVATE
+        KEY) | (PuTTY-User-Key-File-2) | (BEGIN SSH2 ENCRYPTED PRIVATE KEY)
+    - Description: Facebook Secret
+      Item: (?i)facebook(.{0,4})?['"][0-9a-f]{32}['"]
+    - Description: Twitter Secret
+      Item: (?i)twitter(.{0,4})?['"][0-9a-zA-Z]{35,44}['"]
+    - Description: Github Secret
+      Item: (?i)github(.{0,4})?['"][0-9a-zA-Z]{35,40}['"]
+    - Description: Slack
+      Item: xox[baprs]-([0-9a-zA-Z]{10,48})?
+    - Description: Slack Webhook
+      Item: https://hooks.slack.com/services/T[a-zA-Z0-9_]{8}/B[a-zA-Z0-9_]{8}/[a-zA-Z0-9_]{24}
+    - Description: Twilio API Key
+      Item: SK[a-z0-9]{32}
+    - Description: Heroku API Key
+      Item: '[h|H][e|E][r|R][o|O][k|K][u|U].*[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}'
+    - Description: Google OAuth
+      Item: ("client_secret":"[a-zA-Z0-9-_]{24}")
+    - Description: GCP Service Account
+      Item: '"type": "service_account"'
+    - Description: Password in URL
+      Item: '[a-zA-Z]{3,10}://[^/\s:@]{3,20}:[^/\s:@]{3,20}@.{1,100}["''\s]'
+    Groups:
+    - Checks:
+      - Action: Alert
+        ConfigDescriptor:
+          Title: Secret Patterns
+          Type: Regex
+          Value: Regex
+        ID: "1"
+        Items: null
+        MandatoryConfigItems: true
+        Message: Detected secrets in resource {{ AdditionalInfo }}
+        OverrideAnnotation: advisor.policy.alcide.io/skip-secret-checks
+        Recommendation: Consider using Secret resource instead of storing secret in
+          ConfigMap
+        Requirements:
+        - '{{ $resource :=  JmespathStringQuery "to_string(@)" }}{{ $secretRegexp
+          :=  .Module.ConfigItems }}{{ RegexFindInValues  $secretRegexp $resource  }}'
+        Severity: Critical
+        Title: Scan ConfigMaps
+      GroupID: "1"
+      ResourceSelector: '{{  KubeListResources "" "" "ConfigMap" "" "" ""}}'
+      Title: Find Secrets in ConfigMaps
+    - Checks:
+      - Action: Alert
+        ConfigDescriptor:
+          Title: Secret Patterns
+          Type: Regex
+          Value: Regex
+        ID: "1"
+        Items: null
+        MandatoryConfigItems: true
+        Message: This check hunts for secrets, api keys and passwords that may have
+          been misplaced in environment variables. Check for - {{ AdditionalInfo }}
+        OverrideAnnotation: advisor.policy.alcide.io/skip-secret-checks
+        Recommendation: If check fails, you should consider using Secret resource
+          instead of storing secrets in environment variables
+        Requirements:
+        - '{{ $envValues :=  JmespathStringQuery "join('' '', spec.containers[].env[?value].value[])"     }}{{
+          $secretRegexp :=  .Module.ConfigItems }}{{ RegexFindInValues  $secretRegexp
+          $envValues  }}'
+        - '{{ $hasInitContainers := JmespathStringQuery "to_string(spec.initContainers
+          != null)" }}{{ if eq $hasInitContainers "true" }}{{ $envValues :=  JmespathStringQuery
+          "join('' '', spec.initContainers[].env[?value].value[])" }}{{ $secretRegexp
+          :=  .Module.ConfigItems }}{{ RegexFindInValues  $secretRegexp $envValues  }}{{
+          else }}true{{ end }}'
+        Severity: Critical
+        Title: Scan PodSpec Environment Variable
+      GroupID: "2"
+      ResourceSelector: '{{  KubeListPodSpecs "" "" "" ""}}'
+      Title: Find Secrets in Pod Environment Variables
+    ID: scrt.1
+    Items: null
+    Platform: Secret
+    Title: Secret Hunting
+    Type: Secret
+Scope:
+  NamespaceExclude: '-'
+  NamespaceInclude: '*'
+UID: 9ab8808f-f3f0-4721-af3b-b021a440f432

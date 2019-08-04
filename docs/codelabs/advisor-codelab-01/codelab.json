@@ -1,0 +1,27 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2019-08-02T22:04:20+03:00",
+  "id": "00001",
+  "duration": 26,
+  "title": "Alcide Kubernetes Advisor Overview",
+  "summary": "Alcide Kubernetes Advisor",
+  "source": "advisor-codelab-01.md",
+  "theme": "",
+  "status": [
+    "public"
+  ],
+  "category": [
+    "kubernetes",
+    "security",
+    "advisor"
+  ],
+  "tags": [
+    "kubernetes"
+  ],
+  "feedback": "https://github.com/alcideio/pipeline",
+  "ga": "0",
+  "url": "00001"
+}

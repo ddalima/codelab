@@ -1,0 +1,31 @@
+baseURL = "http://codelabs.alcide.io/"
+languageCode = "en-us"
+title = "Alcide | Tutorials & Codelabs"
+theme = "cards"
+paginate = 6
+publishDir = "docs"
+
+
+[params]
+  #builtBy = "Alcide IO"
+  defaultImage = "frontpage-default-k8s.png"
+
+  facebook = ""
+  quora = ""
+  linkedin = "https://linkedin.com/company/alcide"
+  twitter = "https://twitter.com/alcideio"
+  github = "https://github.com/alcideio"
+  email = "info@alcide.io"
+
+  fbLikeBox = ""
+  fbAppId = ""
+  fbPageUrl = ""
+  fbPageTitle = ""
+
+  analytics = ""
+  disqus = ""
+
+  [params.copyright]
+     name = "Alcide IO Ltd."
+     link = "https://www.alcide.io"
+

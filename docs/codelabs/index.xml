@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Codelabs on Alcide | Tutorials &amp; Codelabs</title>
+    <link>http://codelabs.alcide.io/codelabs/</link>
+    <description>Recent content in Codelabs on Alcide | Tutorials &amp; Codelabs</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 31 Jul 2019 10:51:47 +0530</lastBuildDate>
+    
+	<atom:link href="http://codelabs.alcide.io/codelabs/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Alcide Advisor</title>
+      <link>http://codelabs.alcide.io/codelabs/advisor-codelab-01/</link>
+      <pubDate>Wed, 31 Jul 2019 10:51:47 +0530</pubDate>
+      
+      <guid>http://codelabs.alcide.io/codelabs/advisor-codelab-01/</guid>
+      <description>In this tutorial we will learn about Alcide Kubernetes Advisor, and how we can implement continous security and cluster hygiene for one or more Kubernetes clusters.
+Start Codelab
+Star</description>
+    </item>
+    
+    <item>
+      <title>Alcide Advisor | Azure DevOps</title>
+      <link>http://codelabs.alcide.io/codelabs/advisor-codelab-03/</link>
+      <pubDate>Wed, 31 Jul 2019 10:51:47 +0530</pubDate>
+      
+      <guid>http://codelabs.alcide.io/codelabs/advisor-codelab-03/</guid>
+      <description>In this tutorial we will learn about Alcide Kubernetes Advisor, and how we can implement continous security and cluster hygiene for one or more Kubernetes clusters in a Azure DevOps pipeline.
+Start Codelab</description>
+    </item>
+    
+    <item>
+      <title>Alcide Advisor | Jenkins</title>
+      <link>http://codelabs.alcide.io/codelabs/advisor-codelab-02/</link>
+      <pubDate>Wed, 31 Jul 2019 10:51:47 +0530</pubDate>
+      
+      <guid>http://codelabs.alcide.io/codelabs/advisor-codelab-02/</guid>
+      <description>In this tutorial we will learn about Alcide Kubernetes Advisor, and how we can implement continous security and cluster hygiene for one or more Kubernetes clusters in a Jenkins CI+CD pipeline.
+Start Codelab
+Star</description>
+    </item>
+    
+    <item>
+      <title>Coming Soon</title>
+      <link>http://codelabs.alcide.io/codelabs/coming-soon-codelab-90/</link>
+      <pubDate>Wed, 31 Jul 2019 10:51:47 +0530</pubDate>
+      
+      <guid>http://codelabs.alcide.io/codelabs/coming-soon-codelab-90/</guid>
+      <description>Code-to-Production Security for Workloads Running on Kubernetes
+More Tutorials coming soon
+Star</description>
+    </item>
+    
+    <item>
+      <title>Coming Soon</title>
+      <link>http://codelabs.alcide.io/codelabs/coming-soon-codelab-91/</link>
+      <pubDate>Wed, 31 Jul 2019 10:51:47 +0530</pubDate>
+      
+      <guid>http://codelabs.alcide.io/codelabs/coming-soon-codelab-91/</guid>
+      <description>Code-to-Production Security for Workloads Running on Kubernetes
+More Tutorials coming soon
+Star</description>
+    </item>
+    
+    <item>
+      <title>Coming Soon</title>
+      <link>http://codelabs.alcide.io/codelabs/coming-soon-codelab-92/</link>
+      <pubDate>Wed, 31 Jul 2019 10:51:47 +0530</pubDate>
+      
+      <guid>http://codelabs.alcide.io/codelabs/coming-soon-codelab-92/</guid>
+      <description>Code-to-Production Security for Workloads Running on Kubernetes
+More Tutorials coming soon
+Star</description>
+    </item>
+    
+    <item>
+      <title>Coming Soon</title>
+      <link>http://codelabs.alcide.io/codelabs/coming-soon-codelab-93/</link>
+      <pubDate>Wed, 31 Jul 2019 10:51:47 +0530</pubDate>
+      
+      <guid>http://codelabs.alcide.io/codelabs/coming-soon-codelab-93/</guid>
+      <description>Code-to-Production Security for Workloads Running on Kubernetes
+More Tutorials coming soon
+Star</description>
+    </item>
+    
+  </channel>
+</rss>
