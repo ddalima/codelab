@@ -29,7 +29,7 @@
       <guid>http://codelab.alcide.io/codelab/advisor-codelab-03/</guid>
       <description>In this tutorial we will learn about Alcide Kubernetes Advisor, and how we can implement continous security and cluster hygiene for one or more Kubernetes clusters in a Azure DevOps pipeline.
  Azure DevOps on Visual Studio Marketplace can be found here
- Start Codelab
+ Codelab Coming Soon
 
  Note: this freely-available edition of Alcide Kubernrtes Advisor which scans Kubernetes cluster hygiene and security best practices. Alcide&amp;rsquo;s commercial customers have access to additional scanning features, such as policy driven kubernetes scan, automatic updates, consuming reports from multiple clusters in a single dashboard, and enforcing policies using adminssion controller.</description>
     </item>
@@ -41,7 +41,7 @@
       
       <guid>http://codelab.alcide.io/codelab/advisor-codelab-02/</guid>
       <description>In this tutorial we will learn about Alcide Kubernetes Advisor, and how we can implement continous security and cluster hygiene for one or more Kubernetes clusters in a Jenkins CI+CD pipeline.
-Start Codelab
+Codelab Coming Soon
  Note: this freely-available edition of Alcide Kubernrtes Advisor which scans Kubernetes cluster hygiene and security best practices. Alcide&amp;rsquo;s commercial customers have access to additional scanning features, such as policy driven kubernetes scan, automatic updates, consuming reports from multiple clusters in a single dashboard, and enforcing policies using adminssion controller.</description>
     </item>
     

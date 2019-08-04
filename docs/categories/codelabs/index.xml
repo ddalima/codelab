@@ -18,7 +18,10 @@
       
       <guid>http://codelab.alcide.io/codelab/coming-soon-codelab-90/</guid>
       <description>Coming Soon |
-A codelab that illustrates how to implement Alcide Kubernetes Advisor scan for multiple clusters.</description>
+A codelab that illustrates how to implement Alcide Kubernetes Advisor scan for multiple clusters.
+Codelab Coming Soon
+
+ Note: this freely-available edition of Alcide Kubernrtes Advisor which scans Kubernetes cluster hygiene and security best practices. Alcide&amp;rsquo;s commercial customers have access to additional scanning features, such as policy driven kubernetes scan, automatic updates, consuming reports from multiple clusters in a single dashboard, and enforcing policies using adminssion controller.</description>
     </item>
     
   </channel>

@@ -11,7 +11,7 @@ In this tutorial we will learn about **Alcide Kubernetes Advisor**, and how we c
 > Azure DevOps on Visual Studio Marketplace can be found <a href="https://marketplace.visualstudio.com/items?itemName=Alcide.alcide-kubernetes-advisor-ce" target="_blank">
 here</a>
 
-[Start Codelab](codelabs/advisor-codelab-03/index.html)
+<a href="#" class="btn btn-primary" role="button">Codelab Coming Soon</a>
 
 
 <a href="https://marketplace.visualstudio.com/items?itemName=Alcide.alcide-kubernetes-advisor-ce" target="_blank">
