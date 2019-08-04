@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>codelabs on Alcide | Tutorials &amp; Codelabs</title>
-    <link>http://codelabs.alcide.io/categories/codelabs/</link>
+    <link>https://alcideio.github.io/codelab/categories/codelabs/</link>
     <description>Recent content in codelabs on Alcide | Tutorials &amp; Codelabs</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 31 Jul 2019 10:51:47 +0530</lastBuildDate>
     
-	<atom:link href="http://codelabs.alcide.io/categories/codelabs/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://alcideio.github.io/codelab/categories/codelabs/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>Multi Cluster Scans</title>
-      <link>http://codelabs.alcide.io/codelab/coming-soon-codelab-90/</link>
+      <link>https://alcideio.github.io/codelab/codelab/coming-soon-codelab-90/</link>
       <pubDate>Wed, 31 Jul 2019 10:51:47 +0530</pubDate>
       
-      <guid>http://codelabs.alcide.io/codelab/coming-soon-codelab-90/</guid>
+      <guid>https://alcideio.github.io/codelab/codelab/coming-soon-codelab-90/</guid>
       <description>Coming Soon |
 A codelab that illustrates how to implement Alcide Kubernetes Advisor scan for multiple clusters.</description>
     </item>

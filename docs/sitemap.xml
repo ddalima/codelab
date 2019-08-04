@@ -3,66 +3,66 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>http://codelabs.alcide.io/codelab/advisor-codelab-01/</loc>
+    <loc>https://alcideio.github.io/codelab/codelab/advisor-codelab-01/</loc>
     <lastmod>2019-07-31T10:51:47+05:30</lastmod>
   </url>
   
   <url>
-    <loc>http://codelabs.alcide.io/</loc>
-    <lastmod>2019-07-31T10:51:47+05:30</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://codelabs.alcide.io/codelab/advisor-codelab-03/</loc>
-    <lastmod>2019-07-31T10:51:47+05:30</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://codelabs.alcide.io/categories/</loc>
+    <loc>https://alcideio.github.io/codelab/</loc>
     <lastmod>2019-07-31T10:51:47+05:30</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://codelabs.alcide.io/codelab/</loc>
+    <loc>https://alcideio.github.io/codelab/codelab/advisor-codelab-03/</loc>
+    <lastmod>2019-07-31T10:51:47+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://alcideio.github.io/codelab/categories/</loc>
     <lastmod>2019-07-31T10:51:47+05:30</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://codelabs.alcide.io/codelab/advisor-codelab-02/</loc>
-    <lastmod>2019-07-31T10:51:47+05:30</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://codelabs.alcide.io/codelab/coming-soon-codelab-90/</loc>
-    <lastmod>2019-07-31T10:51:47+05:30</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://codelabs.alcide.io/categories/codelabs/</loc>
+    <loc>https://alcideio.github.io/codelab/codelab/</loc>
     <lastmod>2019-07-31T10:51:47+05:30</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://codelabs.alcide.io/categories/codelabs-advisor/</loc>
+    <loc>https://alcideio.github.io/codelab/codelab/advisor-codelab-02/</loc>
+    <lastmod>2019-07-31T10:51:47+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://alcideio.github.io/codelab/codelab/coming-soon-codelab-90/</loc>
+    <lastmod>2019-07-31T10:51:47+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://alcideio.github.io/codelab/categories/codelabs/</loc>
     <lastmod>2019-07-31T10:51:47+05:30</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://codelabs.alcide.io/pages/about/</loc>
-  </url>
-  
-  <url>
-    <loc>http://codelabs.alcide.io/pages/</loc>
+    <loc>https://alcideio.github.io/codelab/categories/codelabs-advisor/</loc>
+    <lastmod>2019-07-31T10:51:47+05:30</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://codelabs.alcide.io/tags/</loc>
+    <loc>https://alcideio.github.io/codelab/pages/about/</loc>
+  </url>
+  
+  <url>
+    <loc>https://alcideio.github.io/codelab/pages/</loc>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://alcideio.github.io/codelab/tags/</loc>
     <priority>0</priority>
   </url>
   
