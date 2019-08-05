@@ -73,6 +73,7 @@ Alcide Kubernetes Advisor tasks require linux based running environment and ther
 ![](img/azure-devops/03.png)
 
 ## Add Pipeline Tasks
+Duration: 3:00
 
 #### Add **Alcide Kubernetes Advisor** Task to our pipeline 
 
@@ -84,6 +85,7 @@ Alcide Kubernetes Advisor tasks require linux based running environment and ther
 ![](img/azure-devops/05.png)
 
 ## Configure **Alcide Kubernetes Advisor Task**
+Duration: 1:00
 
 * Select **Azure Resource Manager** in the drop down list **Service connection type**
 * Select the *Subscription* with your *AKS* Kubernetes cluster you'd like to scan
@@ -101,6 +103,7 @@ Alcide Kubernetes Advisor tasks require linux based running environment and ther
 ![](img/azure-devops/task-03.png)
 
 ## Running The Pipeline
+Duration: 2:00
 
 #### Run the pipeline by clicking the **Save & Queue** button
 
@@ -111,6 +114,7 @@ At this point a build host will spin up and run our pipeline tasks.
 ![](img/azure-devops/08.png)
 
 ## Review the scan report in your pipeline artifact
+Duration: 3:00
 
 * Click on the *Artifcats* button in the upper right corner
 * Navigate through the menu to download the generated scan report
