@@ -1,0 +1,145 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Alcide Kubernetes Advisor Overview</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid="0"
+                  id="00002"
+                  title="Alcide Kubernetes Advisor Overview"
+                  environment="web"
+                  feedback-link="https://github.com/alcideio/pipeline">
+    
+      <google-codelab-step label="Welcome" duration="1">
+        <p>In this tutorial we will learn about <strong>Alcide Kubernetes Advisor</strong>, and how we can integrate it with Azure DevOps to implement continous security and cluster hygiene for one or more Kubernetes clusters.</p>
+<p class="image-container"><img alt="Alcide Code-to-production secutiry" style="width: 300.00px" src="img/ae3ed2591efa082a.png"></p>
+<p>Alcide Advisor is an agentless Kubernetes audit, compliance and hygiene scanner that&#39;s built to ensure a friciton free DevSecOps workflows. Alcide Advisor can be plugged early in the development process and before moving to production.</p>
+<h3 is-upgraded>With Alcide Advisor, the security checks you can cover includes:</h3>
+<ul>
+<li>Kubernetes infrastructure vulnerability scanning.</li>
+<li>Hunting misplaced secrets, or excessive priviliges for secret access.</li>
+<li>Workload hardening from Pod Security to network policies.</li>
+<li>Istio security configuration and best practices.</li>
+<li>Ingress Controllers for security best practices.</li>
+<li>Kubernetes API server access privileges.</li>
+<li>Kubernetes operators security best practices.</li>
+<li>Deployment conformance to labeling, annotating, resource limits and much more ...</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Prerequisites" duration="0">
+        <ul>
+<li><a href="https://azure.microsoft.com/en-in/services/devops/" target="_blank">Azure DevOps account</a></li>
+<li><a href="https://azure.microsoft.com/en-in/services/kubernetes-service/" target="_blank">Azure AKS</a> cluster running as part of your <em>Azure Subscription</em></li>
+</ul>
+<p class="image-container"><img alt="Alcide Code-to-production secutiry" style="width: 800.00px" src="img/59db1bd85aca6cb1.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Prepare Your Environment" duration="1">
+        <ul>
+<li><a href="https://marketplace.visualstudio.com/items?itemName=Alcide.alcide-kubernetes-advisor-ce" target="_blank">Install Alcide Kubernetes Advisor Task</a>.</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Create a Scan Pipeline" duration="3">
+        <p>We are going to create an Azure Pipeline that runs a security scan of an AKS cluster with the buitin scan profile.</p>
+<h2 is-upgraded>Create a build pipeline</h2>
+<ul>
+<li>Select <strong>Pipelines</strong> in the left menu</li>
+<li>Select a Git repository - in this tutorial  we will use the <em>Classic Editor</em> - see image</li>
+</ul>
+<p class="image-container"><img src="img/4e1b8f67bb31a4f4.png"></p>
+<ul>
+<li>Select your Git Repo - in this tutorial we chose Azure DevOps Git repo.</li>
+</ul>
+<p class="image-container"><img src="img/486bfd8cc36bc7ce.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Configure Pipeline Host Environment" duration="1">
+        <p>Alcide Kubernetes Advisor tasks require linux based running environment and therefore we will select <strong>Ubuntu 1604</strong> in the drop list</p>
+<p class="image-container"><img src="img/d35dee024ed88f2e.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Add Pipeline Tasks" duration="0">
+        <h3 is-upgraded>Add <strong>Alcide Kubernetes Advisor</strong> Task to our pipeline</h3>
+<p class="image-container"><img src="img/d43b44f41dc73a1c.png"></p>
+<h3 is-upgraded>Add <strong>Publish Build Artifacts</strong> Task to our pipeline</h3>
+<p class="image-container"><img src="img/37096f12196495ad.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Configure 
+Alcide Kubernetes Advisor Task" duration="0">
+        <ul>
+<li>Select <strong>Azure Resource Manager</strong> in the drop down list <strong>Service connection type</strong></li>
+<li>Select the <em>Subscription</em> with your <em>AKS</em> Kubernetes cluster you&#39;d like to scan</li>
+<li>Select the <strong>Resource group</strong> where your target cluster runs</li>
+<li>Select your <strong>AKS Cluster</strong></li>
+</ul>
+<p class="image-container"><img src="img/3eae4ccfdbc91f7.png"></p>
+<h3 is-upgraded>Configure <strong>Publish Build Artifacts</strong> Task</h3>
+<ul>
+<li>For <em>Path to publish</em> use <strong>$(Build.ArtifactStagingDirectory)</strong></li>
+<li>For <em>Artifact Name</em> use advisor-report</li>
+</ul>
+<p class="image-container"><img src="img/3a1217603911572b.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Running The Pipeline" duration="0">
+        <h3 is-upgraded>Run the pipeline by clicking the <strong>Save &amp; Queue</strong> button</h3>
+<p>To run the pipeline, simply click the <em>Save &amp; Queue</em> button on the menu.</p>
+<p>At this point a build host will spin up and run our pipeline tasks.</p>
+<p class="image-container"><img src="img/b7ec3d2b038759c1.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Review the scan report in your pipeline artifact" duration="0">
+        <ul>
+<li>Click on the <em>Artifcats</em> button in the upper right corner</li>
+<li>Navigate through the menu to download the generated scan report</li>
+</ul>
+<p class="image-container"><img src="img/7c249b71e03710c.png"></p>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+
+</body>
+</html>
