@@ -4,14 +4,20 @@
 
 VERSION ?= 1.0.0
 
-.phony: help advisor-codelab-tutorials advisor-codelab-01 advisor-codelab-serve advisor-codelab-run
+.phony: help advisor-codelab-tutorials advisor-codelab-01 advisor-codelab-02 
+.phony: advisor-codelab-serve advisor-codelab-run
 
 advisor-codelab-01: ##@Build Build advisor-codelab-01
 	claat export -f html advisor-codelab-01.md
 	zip -r 00001/tutorial.zip playbook/*
 	mv 00001 $(OUTDIR)/advisor-codelab-01
 
-advisor-codelab-tutorials: advisor-codelab-01 ##@Build All tutorials
+advisor-codelab-02: ##@Build Build advisor-codelab-01
+	claat export -f html advisor-codelab-02.md
+	mv 00002 $(OUTDIR)/advisor-codelab-02
+
+
+advisor-codelab-tutorials: advisor-codelab-01 advisor-codelab-02 ##@Build All tutorials
 
 
 # advisor-codelab-image:  advisor-codelab-01 ##@Build Build Training Contaimner

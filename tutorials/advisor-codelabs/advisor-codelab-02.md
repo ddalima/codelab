@@ -33,73 +33,78 @@ Alcide Advisor is an agentless Kubernetes audit, compliance and hygiene scanner 
 
 ## Prerequisites
 
-*If you already have a running kubernetes cluster you can work with you can skip this step*
-
-For this tutorial you will need a Kubernetes cluster with enough permissions to deploy resources into it.
-
-* [Install and Set Up kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
-
-* [Install Minikube](https://kubernetes.io/docs/tasks/tools/install-minikube/), or any working Kubernetes Cluster
-
+* [Azure DevOps account](https://azure.microsoft.com/en-in/services/devops/)
+* [Azure AKS](https://azure.microsoft.com/en-in/services/kubernetes-service/) cluster running as part of your *Azure Subscription*
 
 <img src="img/advisor-devops.png" alt="Alcide Code-to-production secutiry" width="800"/>
 
-
 ## Prepare Your Environment
-Duration: 02:00
+Duration: 01:00
 
-[Download Files](tutorial.zip) into **/tmp** and unpack
+* [Install Alcide Kubernetes Advisor Task](https://marketplace.visualstudio.com/items?itemName=Alcide.alcide-kubernetes-advisor-ce).
 
-```sh
-cd /tmp &&\
-unzip -o tutorial.zip
-```
+<a href="https://marketplace.visualstudio.com/items?itemName=Alcide.alcide-kubernetes-advisor-ce" target="_blank">
+<img src="https://alcide.gallerycdn.vsassets.io/extensions/alcide/alcide-kubernetes-advisor-ce/2.1.7/1564028252808/Microsoft.VisualStudio.Services.Screenshots.2" alt="Azure DevOps" width="100%"/></a>
 
-Positive
-: Download kube-advisor into **/tmp/training/advisor** or any other location.
+<img src="img/advisor-devops.png" alt="Alcide Code-to-production secutiry" width="800"/>
 
-#### For Linux
-``` sh
-cd /tmp/training/advisor &&\
-curl -o advisor https://alcide.blob.core.windows.net/generic/stable/linux/advisor &&\
-chmod +x advisor
-``` 
-
-#### For Mac 
-``` sh
-cd /tmp/training/advisor &&\
-curl -o advisor https://alcide.blob.core.windows.net/generic/stable/darwin/advisor &&\
-chmod +x advisor
-```
-
-<img src="img/prereq.svg" alt="Alcide Code-to-production secutiry" width="200"/>
-
-
-## Full Cluster Scan
+## Create A Scan Pipeline
 Duration: 03:00
 
-We are going to start with an initial cluster scan using the buitin scan profile.
+We are going to create an Azure Pipeline that runs a security scan of an AKS cluster with the buitin scan profile.
+
+### Create a build pipeline
+Duration: 03:00
+
+* Select **Pipelines** in the left menu
+* Select a Git repository - in this tutorial  we will use the *Classic Editor* - see image 
+
+![](img/azure-devops/01.png)
+
+* Select your Git Repo - in this tutorial we chose Azure DevOps Git repo.
+
+![](img/azure-devops/02.png)
+
+## Configure Pipeline Host Environment
+Duration: 01:00
+
+Alcide Kubernetes Advisor tasks require linux based running environment and therefore we will select **Ubuntu 1604** in the drop list
+
+![](img/azure-devops/03.png)
+
+## Add Pipeline Tasks
+
+#### Add **Alcide Kubernetes Advisor** Task to our pipeline 
+
+![](img/azure-devops/04.png)
+
+#### Add **Publish Build Artifacts** Task to our pipeline 
+
+![](img/azure-devops/05.png)
+
+## Configure **Alcide Kubernetes Advisor Task**
+
+![](img/azure-devops/06.png)
+
+#### Configure **Publish Build Artifacts** Task
 
 
-``` bash
-cd /tmp/training/advisor &&\
- ./advisor validate cluster --cluster-context minikube \
---namespace-include="*" --namespace-exclude="-" --outfile scan.html
-```
+![](img/azure-devops/07.png)
 
-Open in your browser the generated report **scan.html** and review the result across the various categories.
+## Running The Pipeline
 
-``` bash
-google-chrome scan.html&   or   open scan.html&
-```
+#### Run the pipeline by clicking the **Save & Queue** button
 
+![](img/azure-devops/08.png)
 
-<img src="img/advisor-player.svg" alt="Alcide Code-to-production secutiry" width="600"/>
+<img src="img/advisor-player.svg" alt="Alcide Code-to-production secutiry" width="700"/>
+
+## Review the scan report in your pipeline artifact
+![](img/azure-devops/09.png)
 
 
-## Usecase #1: Secret Hunting
-Duration: 06:00
 
+## ENDENDEND
 The reality with Kubernetes clusters is that resources can be mutated as a result of variety of events.
 For example:
 

@@ -6,7 +6,22 @@ VERSION ?= 1.0.0
 
 .phony: help tutorials
 
-  
+get-linux-deps: ##@Install Dependencies Linux
+	curl -LO https://github.com/googlecodelabs/tools/releases/download/v2.2.0/claat-linux-amd64
+	chmod +x claat-linux-amd64
+	sudo mv claat-linux-amd64 /usr/local/bin/claat
+	curl -LO https://github.com/gohugoio/hugo/releases/download/v0.56.3/hugo_extended_0.56.3_macOS-64bit.tar.gz
+	tar -xf hugo_extended_0.56.3_linux-64bit.tar.gz hugo
+	sudo mv hugo /usr/local/bin/hugo
+
+get-mac-deps: ##@Install Dependencies MacOS		
+	curl -LO https://github.com/googlecodelabs/tools/releases/download/v2.2.0/claat-darwin-amd64
+	chmod +x claat-darwin-amd64
+	mv claat-darwin-amd64 /usr/local/bin/claat
+	curl -LO https://github.com/gohugoio/hugo/releases/download/v0.56.3/hugo_extended_0.56.3_Linux-64bit.tar.gz
+	tar -xf hugo_extended_0.56.3_Linux-64bit.tar.gz hugo
+	mv hugo /usr/local/bin/hugo
+ 
 
 tutorial-all: ##@Build Build codelabs
 	rm -Rf _codelabs && mkdir _codelabs
