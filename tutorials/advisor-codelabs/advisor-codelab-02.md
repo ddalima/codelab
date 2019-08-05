@@ -46,9 +46,9 @@ Duration: 01:00
 <a href="https://marketplace.visualstudio.com/items?itemName=Alcide.alcide-kubernetes-advisor-ce" target="_blank">
 <img src="https://alcide.gallerycdn.vsassets.io/extensions/alcide/alcide-kubernetes-advisor-ce/2.1.7/1564028252808/Microsoft.VisualStudio.Services.Screenshots.2" alt="Azure DevOps" width="100%"/></a>
 
-<img src="img/advisor-devops.png" alt="Alcide Code-to-production secutiry" width="800"/>
 
-## Create A Scan Pipeline
+
+## Create a Scan Pipeline
 Duration: 03:00
 
 We are going to create an Azure Pipeline that runs a security scan of an AKS cluster with the buitin scan profile.
@@ -78,215 +78,44 @@ Alcide Kubernetes Advisor tasks require linux based running environment and ther
 
 ![](img/azure-devops/04.png)
 
+
 #### Add **Publish Build Artifacts** Task to our pipeline 
 
 ![](img/azure-devops/05.png)
 
 ## Configure **Alcide Kubernetes Advisor Task**
 
-![](img/azure-devops/06.png)
+* Select **Azure Resource Manager** in the drop down list **Service connection type**
+* Select the *Subscription* with your *AKS* Kubernetes cluster you'd like to scan
+* Select the **Resource group** where your target cluster runs 
+* Select your **AKS Cluster**
+
+![](img/azure-devops/task-02.png)
+
 
 #### Configure **Publish Build Artifacts** Task
 
+* For *Path to publish* use **$(Build.ArtifactStagingDirectory)** 
+* For *Artifact Name* use advisor-report
 
-![](img/azure-devops/07.png)
+![](img/azure-devops/task-03.png)
 
 ## Running The Pipeline
 
 #### Run the pipeline by clicking the **Save & Queue** button
 
+To run the pipeline, simply click the *Save & Queue* button on the menu.
+
+At this point a build host will spin up and run our pipeline tasks.
+
 ![](img/azure-devops/08.png)
 
-<img src="img/advisor-player.svg" alt="Alcide Code-to-production secutiry" width="700"/>
-
 ## Review the scan report in your pipeline artifact
-![](img/azure-devops/09.png)
+
+* Click on the *Artifcats* button in the upper right corner
+* Navigate through the menu to download the generated scan report
+
+![](img/azure-devops/task-04.png)
 
 
 
-## ENDENDEND
-The reality with Kubernetes clusters is that resources can be mutated as a result of variety of events.
-For example:
-
-* User making a manual change to the cluster (*kubectl edit ...*)
-* Code change, that as part of a deployment pipeline, will end up in a running cluster
-* A change in the deployment automation machinery such as Terraform or Ansible
-
-Let's simulate such change ... we are going to add an *AWS Access Key* into a *PodSpec*
-
-Delete nginx deployment from the cluster. 
-
-``` bash
-cat <<EOF | kubectl apply -f -
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  labels:
-    run: nginx
-  name: nginx
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      run: nginx
-  template:
-    metadata:
-      labels:
-        run: nginx
-    spec:
-      containers:
-      - image: nginx
-        env:
-          - name: "aws_secret"
-            value: "AKIAI222221111BBBAAA"
-        imagePullPolicy: Always
-        name: nginx
-        resources: {}
-EOF
-```
-
-Let's run the scan again and review the findings.
-
-```bash
-cd /tmp/training && ./advisor validate cluster --cluster-context minikube --namespace-include="*" --namespace-exclude="-" --outfile scan.html
-```
-
-Open in your browser the generated report **scan.html** and look at the **Secret Hunting** section
-
-``` bash
-google-chrome scan.html&   or   open scan.html&
-```
-
-<img src="img/secret.svg" alt="Alcide Code-to-production secutiry" width="500"/>
-
-## Kubernetes Hygiene Drift
-Duration: 00:20
-
-Maintaining a certain hygiene level in Kubernetes is challanging.
-Doing so continously, is a greater challange, and across multiple cluster that's even harder.
-
-#### Cluster Hygiene Components
-
-* Cluster infrastructure (Control plane, Nodes) hygiene - CVEs, hardenning
-* Cluster resource hardening (monitoring, ingress, service...)
-* Workloads configuration & hardenning
-* Workload software supply chain hygiene
-
-
-<img src="img/advisor-devops.png" alt="Alcide Code-to-production secutiry" width="800"/>
-
-
-## Creating Cluster Hygiene Baseline
-Duration: 03:00
-
-Let's start with establishing a baseline of whatever is currently running in a cluster.
-The assumption here is that existing environment satifies our hygiene expectations - but that is not necessarily the reality, which is why reviewing a full cluster scan is critical from best practice perspective.
-
-Negative
-: Note **baseline.yaml** now holds our cluster baseline - do not modify this file manually
-
-``` bash
-cd /tmp/training/advisor &&\ 
-./advisor generate policy-profile --cluster-context minikube --namespace-include="*" --namespace-exclude="-" --outfile baseline.yaml
-```
-
-<img src="img/advisor-player.svg" alt="Alcide Code-to-production secutiry" width="600"/>
-
-
-## Usecase #2: Image Registry Whitelisting
-Duration: 03:00
-
-Let's introduce a new resource into the cluster, which use an image from an unauthorized location.
-
-``` bash
-cat <<EOF | kubectl apply -f -
-apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: hello-badimage
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      run: hello-badimage
-  template:
-    metadata:
-      labels:
-        run: hello-badimage
-    spec:
-      containers:
-      - image: k8s.gcr.io/echoserver:1.10
-        imagePullPolicy: IfNotPresent
-        name: hello-badimage
-        ports:
-        - containerPort: 8080
-          protocol: TCP
-EOF
-```
-
-Positive
-: Note the baseline we created contains the image registries used at baseline creation time
-
-
-Let's run the scan again, but now with the generated profile, 
-which contains a the list of observed image registries and review the findings.
-
-```bash
-cd /tmp/training/advisor && ./advisor validate cluster --cluster-context minikube --namespace-include="*" --namespace-exclude="-" --policy-profile baseline.yaml --outfile scan.html
-```
-
-Open in your browser the generated report **scan.html** and look at the **Secret Hunting** section
-
-``` bash
-google-chrome scan.html&   or   open scan.html&
-```
-
-Positive
-: We should now see that the *Workload Software Supply Chain* has a critical exception
-
-
-
-## Running The Entire Playbook
-Duration: 05:30
-
-#### Open and edit advisor-minikube-demo.sh
-
-Negative
-: Set your local editor **DEFAULT_TEXT_EDITOR**
-
-Negative
-: Set your local web browser  **WEB_BROWSER**
-
-Negative
-: Set you target cluster  **KUBE_CLUSTER**
-
-#### Run the playbook
-
-Positive
-: Hit the **Enter** to move from one step to the next one.
-
-
-```bash
-cd /tmp/training/advisor &&\
-export  DEFAULT_TEXT_EDITOR=vim &&\
-export  WEB_BROWSER=google-chrome &&\
-export  KUBE_CLUSTER=minikube &&\
-./advisor-minikube-demo.sh
-```
-
-
-
-<img src="img/welcome.svg" alt="Alcide Code-to-production secutiry" width="400"/>
-
-## Additional References
-Duration: 01:00
-
-### CI+CD Integration samples
-
-See [https://github.com/alcideio/pipeline](https://github.com/alcideio/pipeline)
-
-### GKE Multi-cluster Scan Example
-
-See [gke-advisor-scan.sh](https://raw.githubusercontent.com/alcideio/pipeline/master/scripts/gke-advisor-scan.sh)
-
-<img src="img/advisor-player.svg" alt="Alcide Code-to-production secutiry" width="700"/>
