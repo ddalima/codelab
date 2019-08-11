@@ -22,13 +22,13 @@
 <body>
   <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
   <google-codelab codelab-gaid="0"
-                  id="00003"
+                  id="00004"
                   title="Alcide Kubernetes Advisor Overview"
                   environment="web"
                   feedback-link="https://github.com/alcideio/pipeline">
     
       <google-codelab-step label="Welcome" duration="1">
-        <p>In this codelab we will create a script that given an <em>Azure subscription</em>, we will scan the entire AKS clusters in the subscription, using <strong>Alcide Kubernetes Advisor</strong>.</p>
+        <p>In this codelab we will create a script that given a <em>GCP Project</em>, we will scan the entire GKE clusters in the project, using <strong>Alcide Kubernetes Advisor</strong>.</p>
 <p class="image-container"><img alt="Alcide Code-to-production secutiry" style="width: 300.00px" src="img/ae3ed2591efa082a.png"></p>
 <p>Alcide Advisor is an agentless Kubernetes audit, compliance and hygiene scanner that&#39;s built to ensure a friciton free DevSecOps workflows. Alcide Advisor can be plugged early in the development process and before moving to production.</p>
 <h3 is-upgraded>With Alcide Advisor, the security checks you can cover includes:</h3>
@@ -47,9 +47,9 @@
       </google-codelab-step>
     
       <google-codelab-step label="Prerequisites" duration="0">
-        <p>In this codelab we will use an <em>Azure Subscription</em>, and scan the various AKS deployed in this subscription using Alcide Kubernetes Advisor.</p>
-<p>Make sure your <a href="https://azure.microsoft.com/en-in/services/kubernetes-service/" target="_blank">Azure AKS</a> clusters running as part of your <em>Azure Subscription</em></p>
-<aside class="special"><p>Use ‘az account show&#39; to see how your local environment is configured</p>
+        <p>In this codelab we will use a <em>GCP Project</em>, to scan the various GKE clusters deployed in this project by using Alcide Kubernetes Advisor.</p>
+<p>Make sure your <a href="https://cloud.google.com/kubernetes-engine/" target="_blank">Google GKE</a> clusters running as part of your <em>GCP Project</em></p>
+<aside class="special"><p>Use ‘gcloud info&#39; to see how your local environment is configured</p>
 </aside>
 <p class="image-container"><img alt="Alcide Code-to-production secutiry" style="width: 800.00px" src="img/59db1bd85aca6cb1.png"></p>
 
@@ -57,39 +57,38 @@
       </google-codelab-step>
     
       <google-codelab-step label="Prepare Your Environment" duration="6">
-        <p>Azure offers multiple sign-in options, if you do not already have your <em>Azure CLI</em> working against your <em>Azure Subscription</em>, refer to <a href="https://docs.microsoft.com/en-us/cli/azure/authenticate-azure-cli?view=azure-cli-latest" target="_blank">‘Sign in with Azure CLI&#39;</a> guide.</p>
+        <p>GCP offers multiple sign-in options, if you do not already have your <em>gcloud cli</em> working against your <em>GCP Project</em>, refer to <a href="https://cloud.google.com/sdk/docs/initializing" target="_blank">‘Initializing Cloud SDK&#39;</a> guide.</p>
 <ul>
 <li><a href="https://kubernetes.io/docs/tasks/tools/install-kubectl/" target="_blank">Install and Set Up kubectl</a>.</li>
-<li><a href="https://kubernetes.io/docs/tasks/tools/install-minikube/" target="_blank">Install and Set Up Azure CLI</a></li>
-<li><a href="https://stedolan.github.io/jq/download/" target="_blank">Install JSON Query - jq</a></li>
+<li><a href="https://cloud.google.com/sdk/docs/quickstarts" target="_blank">Install</a> and Set Up <a href="https://cloud.google.com/sdk/docs/initializing" target="_blank">gcloud CLI</a></li>
 </ul>
 <p class="image-container"><img alt="Alcide Code-to-production secutiry" style="width: 400.00px" src="img/e5a79d18acb8988e.svg"></p>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="Listing AKS Clusters" duration="1">
-        <p>Let&#39;s initially list our AKS clusters.</p>
-<pre><code>az aks list | \
-jq -r &#39;.[] | &#34;Cluster Name: \(.name) ,Resource Group: \(.resourceGroup)&#34;&#39;
+      <google-codelab-step label="Listing GKE Clusters" duration="1">
+        <p>Let&#39;s initially list our GKE clusters.</p>
+<pre><code>gcloud container clusters list --sort-by=NUM_NODES 2&gt; /dev/null  | \
+awk &#39;{ print $1 }&#39; | grep -v NAME
 </code></pre>
 <p class="image-container"><img alt="Alcide Code-to-production secutiry" style="width: 600.00px" src="img/47a932268530064a.svg"></p>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="AKS Cluster Credentials" duration="1">
+      <google-codelab-step label="GKE Cluster Credentials" duration="1">
         <p>Getting a specific cluster credentials should be straight forward once you have the list of clusters and their resource groups.</p>
-<pre><code>cluster_name=mycluster &amp;&amp; \
-cluster_rg=mycluster_rg &amp;&amp; \
-az aks get-credentials --overwrite-existing --name $cluster_name  --resource-group $cluster_rg
+<pre><code>cluster=mycluster &amp;&amp; \
+region=mycluster_rg &amp;&amp; \
+gcloud --quiet container clusters get-credentials --region $region $cluster
 </code></pre>
 <p class="image-container"><img alt="Alcide Code-to-production secutiry" style="width: 600.00px" src="img/47a932268530064a.svg"></p>
 
 
       </google-codelab-step>
     
-      <google-codelab-step label="Scanning Your AKS Cluster" duration="3">
+      <google-codelab-step label="Scanning Your GKE Cluster" duration="3">
         <aside class="special"><p>Download kube-advisor into local directory or any other location in your <em>PATH</em>.</p>
 </aside>
 <h4 is-upgraded>For Linux</h4>
@@ -120,7 +119,6 @@ chmod +x advisor
 <pre><code>#!/usr/bin/env bash
 
 alcide_download_advisor(){
-    echo &#34;Downloading Alcide Advisor&#34;
     curl -o kube-advisor https://alcide.blob.core.windows.net/generic/stable/linux/advisor
     chmod +x kube-advisor  
 }
@@ -136,22 +134,20 @@ alcide_scan_cluster(){
     local outdir=$1
     local context=$2
     
-    echo &#34;Running: &#39;./kube-advisor --eula-sign validate cluster --cluster-context $context --namespace-include=\&#34;*\&#34; --outfile $outdir/$context.html&#39;&#34;
     ./kube-advisor --eula-sign validate cluster --cluster-context $context --namespace-include=&#34;*&#34; --outfile $outdir/$context.html
 }
 
-scan_aks_clusters(){
+scan_gke_clusters(){
     local outdir=$1
-    local CLUSTERS=`az aks list | jq -r &#39;.[] | &#34;\(.name):\(.resourceGroup)&#34; &#39;`
+    local CLUSTER_NAMES=`gcloud container clusters list --sort-by=NUM_NODES 2&gt; /dev/null  | awk &#39;{ print $1 }&#39; | grep -v NAME`
 
-    for cluster in ${CLUSTERS}
+    #echo ${CLUSTER_NAMES}
+    for cluster in ${CLUSTER_NAMES}
     do
-        local cluster_name=`echo $cluster | tr &#39;:&#39; &#39; &#39; | awk &#39;{ print $1}&#39;`
-        local cluster_rg=`echo $cluster | tr &#39;:&#39; &#39; &#39;  | awk &#39;{ print $2}&#39;`
-
-        echo Scanning $cluster_name $cluster_rg 
-        az aks get-credentials --overwrite-existing --name $cluster_name  --resource-group $cluster_rg
-        alcide_scan_current_cluster $outdir $cluster_name
+        local region=`gcloud container clusters list --filter=$cluster | awk &#39;{ print $2}&#39; | grep -v LOCATION`
+        echo Scanning $cluster
+        gcloud --quiet container clusters get-credentials --region $region $cluster
+        alcide_scan_current_cluster $outdir
     done  
 }
 
@@ -162,12 +158,12 @@ outdir=$(mktemp -d -t alcide-advisor-XXXXXXXXXX)
 
 pushd $outdir
 alcide_download_advisor
-scan_aks_clusters $outdir
+scan_gke_clusters $outdir
 popd
 
 </code></pre>
-<p>The script can be found <a href="https://github.com/alcideio/pipeline/blob/master/scripts/aks-advisor-scan.sh" target="_blank">https://github.com/alcideio/pipeline/blob/master/scripts/aks-advisor-scan.sh</a></p>
-<aside class="special"><p>At this point this script can be plugged as cron job in your pipeline, and publish the reports to<br>an Azure Blob for future reference</p>
+<p>The script can be found <a href="https://github.com/alcideio/pipeline/blob/master/scripts/gke-advisor-scan.sh" target="_blank">https://github.com/alcideio/pipeline/blob/master/scripts/gke-advisor-scan.sh</a></p>
+<aside class="special"><p>At this point this script can be plugged as cron job in your pipeline, and publish the reports to<br>an <em>Google Storage Bucket</em> for future reference</p>
 </aside>
 
 
@@ -176,10 +172,10 @@ popd
       <google-codelab-step label="Summary" duration="1">
         <p>In this codelab we learned how to:</p>
 <ul>
-<li>List <em>AKS</em> Clusters</li>
-<li>Get <em>AKS</em> cluster credentials</li>
+<li>List <em>GKE</em> Clusters</li>
+<li>Get <em>GKE</em> cluster credentials</li>
 <li>Scan with <strong>Alcide Advisor</strong> a cluster</li>
-<li>Automate the scan of <em>AKS</em> clusters in an <em>Azure Subscription</em></li>
+<li>Automate the scan of <em>GKE</em> clusters in a <em>GCP Project</em></li>
 </ul>
 <aside class="special"><p>An overview &amp; use cases of Alcide Kubernetes Advisor. <a href="/codelabs/advisor-codelab-01/index.html" target="_blank">Start Codelab</a></p>
 </aside>

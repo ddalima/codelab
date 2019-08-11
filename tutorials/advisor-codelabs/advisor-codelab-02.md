@@ -3,7 +3,7 @@ summary:           Alcide Kubernetes Advisor | Azure DevOps
 id:                00002
 categories:        kubernetes,security,advisor
 environments:      kubernetes
-status:            draft
+status:            public
 feedback link:     https://github.com/alcideio/pipeline
 analytics account: 0
 

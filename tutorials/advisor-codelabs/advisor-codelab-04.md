@@ -1,9 +1,9 @@
 author:            Gadi Naor
-summary:           Scan Azure subscription entire AKS clusters with Alcide Kubernetes Advisor
-id:                00003
+summary:           Scan GKE clusters with Alcide Kubernetes Advisor
+id:                00004
 categories:        kubernetes,security,advisor
-environments:      kubernetes,azure,aks
-status:            draft
+environments:      kubernetes,google,gcp,gke
+status:            public
 feedback link:     https://github.com/alcideio/pipeline
 analytics account: 0
 
@@ -12,7 +12,7 @@ analytics account: 0
 ## Welcome
 Duration: 01:00
 
-In this codelab we will create a script that given an *Azure subscription*, we will scan the entire AKS clusters in the subscription, using **Alcide Kubernetes Advisor**.
+In this codelab we will create a script that given a *GCP Project*, we will scan the entire GKE clusters in the project, using **Alcide Kubernetes Advisor**.
 
 <img src="img/advisor.png" alt="Alcide Code-to-production secutiry" width="300"/>
 
@@ -34,52 +34,50 @@ Alcide Advisor is an agentless Kubernetes audit, compliance and hygiene scanner 
 ## Prerequisites
 Duration: 00:00
 
-In this codelab we will use an *Azure Subscription*, and scan the various AKS deployed in this subscription using Alcide Kubernetes Advisor.
+In this codelab we will use a *GCP Project*, to scan the various GKE clusters deployed in this project by using Alcide Kubernetes Advisor.
 
-Make sure your [Azure AKS](https://azure.microsoft.com/en-in/services/kubernetes-service/) clusters running as part of your *Azure Subscription*
+Make sure your [Google GKE](https://cloud.google.com/kubernetes-engine/) clusters running as part of your *GCP Project*
 
 Positive
-: Use 'az account show' to see how your local environment is configured
+: Use 'gcloud info' to see how your local environment is configured
 
 <img src="img/advisor-devops.png" alt="Alcide Code-to-production secutiry" width="800"/>
 
 ## Prepare Your Environment
 Duration: 06:00
 
-Azure offers multiple sign-in options, if you do not already have your *Azure CLI* working against your *Azure Subscription*, refer to ['Sign in with Azure CLI'](https://docs.microsoft.com/en-us/cli/azure/authenticate-azure-cli?view=azure-cli-latest) guide.
+GCP offers multiple sign-in options, if you do not already have your *gcloud cli* working against your *GCP Project*, refer to ['Initializing Cloud SDK'](https://cloud.google.com/sdk/docs/initializing) guide.
 
 * [Install and Set Up kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
-* [Install and Set Up Azure CLI](https://kubernetes.io/docs/tasks/tools/install-minikube/)
-* [Install JSON Query - jq](https://stedolan.github.io/jq/download/)
-
+* [Install](https://cloud.google.com/sdk/docs/quickstarts) and Set Up [gcloud CLI](https://cloud.google.com/sdk/docs/initializing)
 
 <img src="img/prereq.svg" alt="Alcide Code-to-production secutiry" width="400"/>
 
-## Listing AKS Clusters
+## Listing GKE Clusters
 Duration: 01:00
 
-Let's initially list our AKS clusters.
+Let's initially list our GKE clusters.
 ```bash
-az aks list | \
-jq -r '.[] | "Cluster Name: \(.name) ,Resource Group: \(.resourceGroup)"'
+gcloud container clusters list --sort-by=NUM_NODES 2> /dev/null  | \
+awk '{ print $1 }' | grep -v NAME
 ```
 <img src="img/advisor-player.svg" alt="Alcide Code-to-production secutiry" width="600"/>
 
-## AKS Cluster Credentials
+## GKE Cluster Credentials
 Duration: 01:00
 
 Getting a specific cluster credentials should be straight forward once you have the list of clusters and their resource groups.
 
 ```bash
-cluster_name=mycluster && \
-cluster_rg=mycluster_rg && \
-az aks get-credentials --overwrite-existing --name $cluster_name  --resource-group $cluster_rg
+cluster=mycluster && \
+region=mycluster_rg && \
+gcloud --quiet container clusters get-credentials --region $region $cluster
 ```
 
 <img src="img/advisor-player.svg" alt="Alcide Code-to-production secutiry" width="600"/>
 
 
-## Scanning Your AKS Cluster
+## Scanning Your GKE Cluster
 Duration: 03:00
 
 Positive
@@ -125,7 +123,6 @@ Lets put everything toghether into a script that we can run.
 #!/usr/bin/env bash
 
 alcide_download_advisor(){
-    echo "Downloading Alcide Advisor"
     curl -o kube-advisor https://alcide.blob.core.windows.net/generic/stable/linux/advisor
     chmod +x kube-advisor  
 }
@@ -141,22 +138,20 @@ alcide_scan_cluster(){
     local outdir=$1
     local context=$2
     
-    echo "Running: './kube-advisor --eula-sign validate cluster --cluster-context $context --namespace-include=\"*\" --outfile $outdir/$context.html'"
     ./kube-advisor --eula-sign validate cluster --cluster-context $context --namespace-include="*" --outfile $outdir/$context.html
 }
 
-scan_aks_clusters(){
+scan_gke_clusters(){
     local outdir=$1
-    local CLUSTERS=`az aks list | jq -r '.[] | "\(.name):\(.resourceGroup)" '`
+    local CLUSTER_NAMES=`gcloud container clusters list --sort-by=NUM_NODES 2> /dev/null  | awk '{ print $1 }' | grep -v NAME`
 
-    for cluster in ${CLUSTERS}
+    #echo ${CLUSTER_NAMES}
+    for cluster in ${CLUSTER_NAMES}
     do
-        local cluster_name=`echo $cluster | tr ':' ' ' | awk '{ print $1}'`
-        local cluster_rg=`echo $cluster | tr ':' ' '  | awk '{ print $2}'`
-
-        echo Scanning $cluster_name $cluster_rg 
-        az aks get-credentials --overwrite-existing --name $cluster_name  --resource-group $cluster_rg
-        alcide_scan_current_cluster $outdir $cluster_name
+        local region=`gcloud container clusters list --filter=$cluster | awk '{ print $2}' | grep -v LOCATION`
+        echo Scanning $cluster
+        gcloud --quiet container clusters get-credentials --region $region $cluster
+        alcide_scan_current_cluster $outdir
     done  
 }
 
@@ -167,25 +162,25 @@ outdir=$(mktemp -d -t alcide-advisor-XXXXXXXXXX)
 
 pushd $outdir
 alcide_download_advisor
-scan_aks_clusters $outdir
+scan_gke_clusters $outdir
 popd
 
 ```
 
-The script can be found [https://github.com/alcideio/pipeline/blob/master/scripts/aks-advisor-scan.sh](https://github.com/alcideio/pipeline/blob/master/scripts/aks-advisor-scan.sh)
+The script can be found [https://github.com/alcideio/pipeline/blob/master/scripts/gke-advisor-scan.sh](https://github.com/alcideio/pipeline/blob/master/scripts/gke-advisor-scan.sh)
 
 Positive
 : At this point this script can be plugged as cron job in your pipeline, and publish the reports to
-an Azure Blob for future reference
+an *Google Storage Bucket* for future reference
 
 ## Summary
 Duration: 01:00
 
 In this codelab we learned how to:
-* List *AKS* Clusters
-* Get *AKS* cluster credentials 
+* List *GKE* Clusters
+* Get *GKE* cluster credentials 
 * Scan with **Alcide Advisor** a cluster
-* Automate the scan of *AKS* clusters in an *Azure Subscription* 
+* Automate the scan of *GKE* clusters in a *GCP Project* 
 
 Positive
 : An overview & use cases of Alcide Kubernetes Advisor. <a href="/codelabs/advisor-codelab-01/index.html" class="btn btn-primary" role="button">Start Codelab</a>

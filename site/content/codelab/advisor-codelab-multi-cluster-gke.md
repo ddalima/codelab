@@ -1,14 +1,16 @@
 ---
-title:  "Multi Cluster Scans (AKS)"
+title:  "Multi Cluster Scans (GKE)"
 date:   2019-08-11 00:00:01 +0530
 categories: codelabs
 img: "codelab-advisor-03.png"
 author: "Gadi Naor"
 ---
 
-In this codelab we will create a script that given an *Azure subscription*, we will scan the entire AKS clusters in the subscription, using Alcide Kubernetes Advisor.
+In this codelab we will create a script that given a *GCP Project*, we will scan the entire GKE clusters in the project, using Alcide Kubernetes Advisor.
+The scripting implemented in this codelab, can than be used to integrate into a nightly cron job in your pipeline.
 
-<a href="/codelabs/advisor-codelab-03/index.html" class="btn btn-primary" role="button">Start Codelab</a>
+
+<a href="/codelabs/advisor-codelab-04/index.html" class="btn btn-primary" role="button">Start Codelab</a>
 
 
 <a href="/codelabs/advisor-codelab-03/index.html">

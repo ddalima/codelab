@@ -21,9 +21,14 @@ advisor-codelab-03: ##@Build Build advisor-codelab-03
 	claat export -f html advisor-codelab-03.md
 	mv 00003 $(OUTDIR)/advisor-codelab-03
 
+advisor-codelab-04: ##@Build Build advisor-codelab-04
+	claat export -f html advisor-codelab-04.md
+	mv 00004 $(OUTDIR)/advisor-codelab-04
 
-
-advisor-codelab-tutorials: advisor-codelab-01 advisor-codelab-02 advisor-codelab-03 ##@Build All tutorials
+advisor-codelab-tutorials: advisor-codelab-01 \
+	advisor-codelab-02 \
+	advisor-codelab-03 \
+	advisor-codelab-04 ##@Build All tutorials
 
 
 # advisor-codelab-image:  advisor-codelab-01 ##@Build Build Training Contaimner
@@ -33,8 +38,8 @@ advisor-codelab-tutorials: advisor-codelab-01 advisor-codelab-02 advisor-codelab
 # advisor-codelab-run: ##@Local Docker run
 # 	docker run --rm --name advisor-codelab -p 9090:9090 alcide.io/codelab:latest   
 
-advisor-codelab-serve: advisor-codelab-01 ##@Local Serve locally
-	cd 00001 && claat serve | cd ..
+# advisor-codelab-serve: advisor-codelab-01 ##@Local Serve locally
+# 	cd 00001 && claat serve | cd ..
 
 HELP_FUN = \
          %help; \

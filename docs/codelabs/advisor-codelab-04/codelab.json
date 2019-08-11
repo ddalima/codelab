@@ -3,12 +3,12 @@
   "format": "html",
   "prefix": "https://storage.googleapis.com",
   "mainga": "UA-49880327-14",
-  "updated": "2019-08-11T10:17:56-04:00",
-  "id": "00002",
+  "updated": "2019-08-11T13:34:54-04:00",
+  "id": "00004",
   "duration": 18,
   "title": "Alcide Kubernetes Advisor Overview",
-  "summary": "Alcide Kubernetes Advisor | Azure DevOps",
-  "source": "advisor-codelab-02.md",
+  "summary": "Scan GKE clusters with Alcide Kubernetes Advisor",
+  "source": "advisor-codelab-04.md",
   "theme": "",
   "status": [
     "public"
@@ -19,9 +19,12 @@
     "advisor"
   ],
   "tags": [
+    "gcp",
+    "gke",
+    "google",
     "kubernetes"
   ],
   "feedback": "https://github.com/alcideio/pipeline",
   "ga": "0",
-  "url": "00002"
+  "url": "00004"
 }

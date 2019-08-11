@@ -3,25 +3,41 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>http://codelab.alcide.io/codelab/advisor-codelab-overview/</loc>
+    <lastmod>2019-08-11T10:51:47+05:30</lastmod>
+  </url>
+  
+  <url>
     <loc>http://codelab.alcide.io/</loc>
-    <lastmod>2019-08-11T00:00:01+05:30</lastmod>
+    <lastmod>2019-08-11T10:51:47+05:30</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://codelab.alcide.io/categories/</loc>
-    <lastmod>2019-08-11T00:00:01+05:30</lastmod>
+    <lastmod>2019-08-11T10:51:47+05:30</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>http://codelab.alcide.io/codelab/</loc>
-    <lastmod>2019-08-11T00:00:01+05:30</lastmod>
+    <lastmod>2019-08-11T10:51:47+05:30</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://codelab.alcide.io/codelab/advisor-codelab-03/</loc>
+    <loc>http://codelab.alcide.io/categories/codelabs-advisor/</loc>
+    <lastmod>2019-08-11T10:51:47+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://codelab.alcide.io/codelab/advisor-codelab-multi-cluster-aks/</loc>
+    <lastmod>2019-08-11T00:00:01+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://codelab.alcide.io/codelab/advisor-codelab-multi-cluster-gke/</loc>
     <lastmod>2019-08-11T00:00:01+05:30</lastmod>
   </url>
   
@@ -32,24 +48,13 @@
   </url>
   
   <url>
-    <loc>http://codelab.alcide.io/codelab/advisor-codelab-01/</loc>
+    <loc>http://codelab.alcide.io/codelab/advisor-codelab-cicd-azure-devops/</loc>
     <lastmod>2019-07-31T10:51:47+05:30</lastmod>
   </url>
   
   <url>
-    <loc>http://codelab.alcide.io/codelab/advisor-codelab-02/</loc>
+    <loc>http://codelab.alcide.io/codelab/advisor-codelab-cicd-jenkins/</loc>
     <lastmod>2019-07-31T10:51:47+05:30</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://codelab.alcide.io/codelab/advisor-codelab-04/</loc>
-    <lastmod>2019-07-31T10:51:47+05:30</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://codelab.alcide.io/categories/codelabs-advisor/</loc>
-    <lastmod>2019-07-31T10:51:47+05:30</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>

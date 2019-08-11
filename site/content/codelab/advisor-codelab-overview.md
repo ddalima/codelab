@@ -1,6 +1,6 @@
 ---
 title:  "Alcide Advisor Overview"
-date:   2019-07-31 10:51:47 +0530
+date:   2019-08-11 10:51:47 +0530
 categories: codelabs advisor
 img: "card-frontpage/frontpage-alcide-advisor.png"
 author: "Gadi Naor"
