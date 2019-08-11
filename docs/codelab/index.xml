@@ -6,10 +6,22 @@
     <description>Recent content in Codelabs on Alcide | Tutorials &amp; Codelabs</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 31 Jul 2019 10:51:47 +0530</lastBuildDate>
+    <lastBuildDate>Sun, 11 Aug 2019 00:00:01 +0530</lastBuildDate>
     
 	<atom:link href="http://codelab.alcide.io/codelab/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Multi Cluster Scans (AKS)</title>
+      <link>http://codelab.alcide.io/codelab/advisor-codelab-03/</link>
+      <pubDate>Sun, 11 Aug 2019 00:00:01 +0530</pubDate>
+      
+      <guid>http://codelab.alcide.io/codelab/advisor-codelab-03/</guid>
+      <description>In this codelab we will create a script that given an Azure subscription, we will scan the entire AKS clusters in the subscription, using Alcide Kubernetes Advisor.
+Start Codelab
+
+ Note: this freely-available edition of Alcide Kubernrtes Advisor which scans Kubernetes cluster hygiene and security best practices. Alcide&amp;rsquo;s commercial customers have access to additional scanning features, such as policy driven kubernetes scan, automatic updates, consuming reports from multiple clusters in a single dashboard, and enforcing policies using adminssion controller.</description>
+    </item>
     
     <item>
       <title>Alcide Advisor Overview</title>
@@ -42,19 +54,6 @@
       <guid>http://codelab.alcide.io/codelab/advisor-codelab-04/</guid>
       <description>In this tutorial we will learn about Alcide Kubernetes Advisor, and how we can implement continous security and cluster hygiene for one or more Kubernetes clusters in a Jenkins CI+CD pipeline.
 Codelab Coming Soon
- Note: this freely-available edition of Alcide Kubernrtes Advisor which scans Kubernetes cluster hygiene and security best practices. Alcide&amp;rsquo;s commercial customers have access to additional scanning features, such as policy driven kubernetes scan, automatic updates, consuming reports from multiple clusters in a single dashboard, and enforcing policies using adminssion controller.</description>
-    </item>
-    
-    <item>
-      <title>Multi Cluster Scans</title>
-      <link>http://codelab.alcide.io/codelab/coming-soon-codelab-90/</link>
-      <pubDate>Wed, 31 Jul 2019 10:51:47 +0530</pubDate>
-      
-      <guid>http://codelab.alcide.io/codelab/coming-soon-codelab-90/</guid>
-      <description>Coming Soon |
-A codelab that illustrates how to implement Alcide Kubernetes Advisor scan for multiple clusters.
-Codelab Coming Soon
-
  Note: this freely-available edition of Alcide Kubernrtes Advisor which scans Kubernetes cluster hygiene and security best practices. Alcide&amp;rsquo;s commercial customers have access to additional scanning features, such as policy driven kubernetes scan, automatic updates, consuming reports from multiple clusters in a single dashboard, and enforcing policies using adminssion controller.</description>
     </item>
     

@@ -1,0 +1,194 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Alcide Kubernetes Advisor Overview</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid="0"
+                  id="00003"
+                  title="Alcide Kubernetes Advisor Overview"
+                  environment="web"
+                  feedback-link="https://github.com/alcideio/pipeline">
+    
+      <google-codelab-step label="Welcome" duration="1">
+        <p>In this tutorial we will learn about <strong>Alcide Kubernetes Advisor</strong>, and how we can integrate it with Azure DevOps to implement continous security and cluster hygiene for one or more Kubernetes clusters.</p>
+<p class="image-container"><img alt="Alcide Code-to-production secutiry" style="width: 300.00px" src="img/ae3ed2591efa082a.png"></p>
+<p>Alcide Advisor is an agentless Kubernetes audit, compliance and hygiene scanner that&#39;s built to ensure a friciton free DevSecOps workflows. Alcide Advisor can be plugged early in the development process and before moving to production.</p>
+<h3 is-upgraded>With Alcide Advisor, the security checks you can cover includes:</h3>
+<ul>
+<li>Kubernetes infrastructure vulnerability scanning.</li>
+<li>Hunting misplaced secrets, or excessive priviliges for secret access.</li>
+<li>Workload hardening from Pod Security to network policies.</li>
+<li>Istio security configuration and best practices.</li>
+<li>Ingress Controllers for security best practices.</li>
+<li>Kubernetes API server access privileges.</li>
+<li>Kubernetes operators security best practices.</li>
+<li>Deployment conformance to labeling, annotating, resource limits and much more ...</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Prerequisites" duration="0">
+        <p>In this codelab we will use an <em>Azure Subscription</em>, and scan the various AKS deployed in this subscription using Alcide Kubernetes Advisor.</p>
+<p>Make sure your <a href="https://azure.microsoft.com/en-in/services/kubernetes-service/" target="_blank">Azure AKS</a> clusters running as part of your <em>Azure Subscription</em></p>
+<p class="image-container"><img alt="Alcide Code-to-production secutiry" style="width: 800.00px" src="img/59db1bd85aca6cb1.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Prepare Your Environment" duration="6">
+        <p>Azure offers multiple sign-in options, if you do not already have your <em>Azure CLI</em> working against your <em>Azure Subscription</em>, refer to <a href="https://docs.microsoft.com/en-us/cli/azure/authenticate-azure-cli?view=azure-cli-latest" target="_blank">‘Sign in with Azure CLI&#39;</a> guide.</p>
+<ul>
+<li><a href="https://kubernetes.io/docs/tasks/tools/install-kubectl/" target="_blank">Install and Set Up kubectl</a>.</li>
+<li><a href="https://kubernetes.io/docs/tasks/tools/install-minikube/" target="_blank">Install and Set Up Azure CLI</a></li>
+<li><a href="https://stedolan.github.io/jq/download/" target="_blank">Install JSON Query - jq</a></li>
+</ul>
+<p class="image-container"><img alt="Alcide Code-to-production secutiry" style="width: 400.00px" src="img/e5a79d18acb8988e.svg"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Listing AKS Clusters" duration="1">
+        <p>Let&#39;s initially list our AKS clusters.</p>
+<pre><code>az aks list | jq -r &#39;.[] | &#34;Cluster Name: \(.name) ,Resource Group: \(.resourceGroup)&#34;&#39;
+</code></pre>
+<p class="image-container"><img alt="Alcide Code-to-production secutiry" style="width: 600.00px" src="img/47a932268530064a.svg"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="AKS Cluster Credentials" duration="1">
+        <p>Getting a specific cluster credentials should be straight forward once you have the list of clusters and their resource groups.</p>
+<pre><code>cluster_name=mycluster &amp;&amp; \
+cluster_rg=mycluster_rg &amp;&amp; \
+az aks get-credentials --overwrite-existing --name $cluster_name  --resource-group $cluster_rg
+</code></pre>
+<p class="image-container"><img alt="Alcide Code-to-production secutiry" style="width: 600.00px" src="img/47a932268530064a.svg"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Scanning Your AKS Cluster" duration="3">
+        <aside class="special"><p>Download kube-advisor into local directory or any other location in your <em>PATH</em>.</p>
+</aside>
+<h4 is-upgraded>For Linux</h4>
+<pre><code>cd /tmp/training/advisor &amp;&amp;\
+curl -o advisor https://alcide.blob.core.windows.net/generic/stable/linux/advisor &amp;&amp;\
+chmod +x advisor
+</code></pre>
+<h4 is-upgraded>For Mac</h4>
+<pre><code>cd /tmp/training/advisor &amp;&amp;\
+curl -o advisor https://alcide.blob.core.windows.net/generic/stable/darwin/advisor &amp;&amp;\
+chmod +x advisor
+</code></pre>
+<p>Make sure you have Alcide Kubernetes Advisor in your PATH environment variable.<br>We are going to start with an initial cluster scan using the buitin scan profile.</p>
+<pre><code>cluster_name=mycluster &amp;&amp; \
+./advisor validate cluster --cluster-context $cluster_name --namespace-include=* --namespace-exclude=-  --outfile scan.html
+</code></pre>
+<p>Open in your browser the generated report <strong>scan.html</strong> and review the result across the various categories.</p>
+<aside class="special"><p>An overview &amp; use cases of Alcide Kubernetes Advisor. <a href="/codelabs/advisor-codelab-01/index.html" target="_blank">Start Codelab</a></p>
+</aside>
+<p class="image-container"><img alt="Alcide Code-to-production secutiry" style="width: 600.00px" src="img/47a932268530064a.svg"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Putting It Altogether" duration="5">
+        <p>Now that we know how to list our clusters, get its credntials and scan it with <strong>Alcide Advisor</strong>,<br>Lets put everything toghether into a script that we can run.</p>
+<pre><code>#!/usr/bin/env bash
+
+alcide_download_advisor(){
+    echo &#34;Downloading Alcide Advisor&#34;
+    curl -o kube-advisor https://alcide.blob.core.windows.net/generic/stable/linux/advisor
+    chmod +x kube-advisor  
+}
+
+alcide_scan_current_cluster(){
+    local outdir=$1
+
+    CURRENT_CONTEXT=`kubectl config current-context`
+    alcide_scan_cluster $outdir ${CURRENT_CONTEXT}
+}
+
+alcide_scan_cluster(){
+    local outdir=$1
+    local context=$2
+    
+    echo &#34;Running: &#39;./kube-advisor --eula-sign validate cluster --cluster-context $context --namespace-include=\&#34;*\&#34; --outfile $outdir/$context.html&#39;&#34;
+    ./kube-advisor --eula-sign validate cluster --cluster-context $context --namespace-include=&#34;*&#34; --outfile $outdir/$context.html
+}
+
+scan_aks_clusters(){
+    local outdir=$1
+    local CLUSTERS=`az aks list | jq -r &#39;.[] | &#34;\(.name):\(.resourceGroup)&#34; &#39;`
+
+    for cluster in ${CLUSTERS}
+    do
+        local cluster_name=`echo $cluster | tr &#39;:&#39; &#39; &#39; | awk &#39;{ print $1}&#39;`
+        local cluster_rg=`echo $cluster | tr &#39;:&#39; &#39; &#39;  | awk &#39;{ print $2}&#39;`
+
+        echo Scanning $cluster_name $cluster_rg 
+        az aks get-credentials --overwrite-existing --name $cluster_name  --resource-group $cluster_rg
+        alcide_scan_current_cluster $outdir $cluster_name
+    done  
+}
+
+
+
+outdir=$(mktemp -d -t alcide-advisor-XXXXXXXXXX)
+
+
+pushd $outdir
+alcide_download_advisor
+scan_aks_clusters $outdir
+popd
+
+</code></pre>
+<p>The script can be found <a href="https://github.com/alcideio/pipeline/blob/master/scripts/aks-advisor-scan.sh" target="_blank">https://github.com/alcideio/pipeline/blob/master/scripts/aks-advisor-scan.sh</a></p>
+<aside class="special"><p>At this point this script can be plugged as cron job in your pipeline, and publish the reports to<br>an Azure Blob for future reference</p>
+</aside>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Summary" duration="1">
+        <p>In this codelab we learned how to:</p>
+<ul>
+<li>List <em>AKS</em> Clusters</li>
+<li>Get <em>AKS</em> cluster credentials</li>
+<li>Scan with <strong>Alcide Advisor</strong> a cluster</li>
+<li>Automate the scan of <em>AKS</em> clusters in an <em>Azure Subscription</em></li>
+</ul>
+<aside class="special"><p>An overview &amp; use cases of Alcide Kubernetes Advisor. <a href="/codelabs/advisor-codelab-01/index.html" target="_blank">Start Codelab</a></p>
+</aside>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+
+</body>
+</html>

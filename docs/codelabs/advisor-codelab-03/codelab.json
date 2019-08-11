@@ -1,0 +1,29 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2019-08-11T08:49:07-04:00",
+  "id": "00003",
+  "duration": 18,
+  "title": "Alcide Kubernetes Advisor Overview",
+  "summary": "Scan Azure subscription entire AKS clusters with Alcide Kubernetes Advisor",
+  "source": "advisor-codelab-03.md",
+  "theme": "",
+  "status": [
+    "draft"
+  ],
+  "category": [
+    "kubernetes",
+    "security",
+    "advisor"
+  ],
+  "tags": [
+    "aks",
+    "azure",
+    "kubernetes"
+  ],
+  "feedback": "https://github.com/alcideio/pipeline",
+  "ga": "0",
+  "url": "00003"
+}

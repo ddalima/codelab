@@ -3,14 +3,37 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>http://codelab.alcide.io/codelab/advisor-codelab-01/</loc>
-    <lastmod>2019-07-31T10:51:47+05:30</lastmod>
+    <loc>http://codelab.alcide.io/</loc>
+    <lastmod>2019-08-11T00:00:01+05:30</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
-    <loc>http://codelab.alcide.io/</loc>
-    <lastmod>2019-07-31T10:51:47+05:30</lastmod>
+    <loc>http://codelab.alcide.io/categories/</loc>
+    <lastmod>2019-08-11T00:00:01+05:30</lastmod>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://codelab.alcide.io/codelab/</loc>
+    <lastmod>2019-08-11T00:00:01+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://codelab.alcide.io/codelab/advisor-codelab-03/</loc>
+    <lastmod>2019-08-11T00:00:01+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://codelab.alcide.io/categories/codelabs/</loc>
+    <lastmod>2019-08-11T00:00:01+05:30</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://codelab.alcide.io/codelab/advisor-codelab-01/</loc>
+    <lastmod>2019-07-31T10:51:47+05:30</lastmod>
   </url>
   
   <url>
@@ -19,31 +42,8 @@
   </url>
   
   <url>
-    <loc>http://codelab.alcide.io/categories/</loc>
-    <lastmod>2019-07-31T10:51:47+05:30</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
-    <loc>http://codelab.alcide.io/codelab/</loc>
-    <lastmod>2019-07-31T10:51:47+05:30</lastmod>
-    <priority>0</priority>
-  </url>
-  
-  <url>
     <loc>http://codelab.alcide.io/codelab/advisor-codelab-04/</loc>
     <lastmod>2019-07-31T10:51:47+05:30</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://codelab.alcide.io/codelab/coming-soon-codelab-90/</loc>
-    <lastmod>2019-07-31T10:51:47+05:30</lastmod>
-  </url>
-  
-  <url>
-    <loc>http://codelab.alcide.io/categories/codelabs/</loc>
-    <lastmod>2019-07-31T10:51:47+05:30</lastmod>
-    <priority>0</priority>
   </url>
   
   <url>
