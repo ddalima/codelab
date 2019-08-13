@@ -25,10 +25,15 @@ advisor-codelab-04: ##@Build Build advisor-codelab-04
 	claat export -f html advisor-codelab-04.md
 	mv 00004 $(OUTDIR)/advisor-codelab-04
 
+advisor-codelab-05: ##@Build Build advisor-codelab-05
+	claat export -f html advisor-codelab-05.md
+	mv 00005 $(OUTDIR)/advisor-codelab-05	
+
 advisor-codelab-tutorials: advisor-codelab-01 \
 	advisor-codelab-02 \
 	advisor-codelab-03 \
-	advisor-codelab-04 ##@Build All tutorials
+	advisor-codelab-04 \
+	advisor-codelab-05 ##@Build All tutorials
 
 
 # advisor-codelab-image:  advisor-codelab-01 ##@Build Build Training Contaimner

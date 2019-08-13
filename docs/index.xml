@@ -22,6 +22,18 @@
     </item>
     
     <item>
+      <title>CircleCI Integration</title>
+      <link>http://codelab.alcide.io/codelab/advisor-codelab-cicd-circleci/</link>
+      <pubDate>Sun, 11 Aug 2019 10:51:47 +0530</pubDate>
+      
+      <guid>http://codelab.alcide.io/codelab/advisor-codelab-cicd-circleci/</guid>
+      <description>In this tutorial we will learn about Alcide Kubernetes Advisor, and how we can implement continous security and cluster hygiene for one or more Kubernetes clusters in a CircleCI CI+CD pipeline.
+Start Codelab
+
+ Note: this freely-available edition of Alcide Kubernrtes Advisor which scans Kubernetes cluster hygiene and security best practices. Alcide&amp;rsquo;s commercial customers have access to additional scanning features, such as policy driven kubernetes scan, automatic updates, consuming reports from multiple clusters in a single dashboard, and enforcing policies using adminssion controller.</description>
+    </item>
+    
+    <item>
       <title>Multi Cluster Scans (AKS)</title>
       <link>http://codelab.alcide.io/codelab/advisor-codelab-multi-cluster-aks/</link>
       <pubDate>Sun, 11 Aug 2019 00:00:01 +0530</pubDate>

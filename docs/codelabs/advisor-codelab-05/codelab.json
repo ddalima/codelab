@@ -1,0 +1,28 @@
+{
+  "environment": "web",
+  "format": "html",
+  "prefix": "https://storage.googleapis.com",
+  "mainga": "UA-49880327-14",
+  "updated": "2019-08-13T07:16:58-04:00",
+  "id": "00005",
+  "duration": 20,
+  "title": "Alcide Kubernetes Advisor Overview",
+  "summary": "Alcide Kubernetes Advisor | Circle CI",
+  "source": "advisor-codelab-05.md",
+  "theme": "",
+  "status": [
+    "public"
+  ],
+  "category": [
+    "kubernetes",
+    "security",
+    "advisor",
+    "circleci"
+  ],
+  "tags": [
+    "kubernetes"
+  ],
+  "feedback": "https://github.com/alcideio/pipeline",
+  "ga": "0",
+  "url": "00005"
+}

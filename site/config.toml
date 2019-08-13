@@ -22,7 +22,7 @@ publishDir = "docs"
   fbPageUrl = ""
   fbPageTitle = ""
 
-  analytics = ""
+  analytics = "UA-89595507-1"
   disqus = ""
 
   [params.copyright]

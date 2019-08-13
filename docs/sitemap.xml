@@ -20,6 +20,11 @@
   </url>
   
   <url>
+    <loc>http://codelab.alcide.io/codelab/advisor-codelab-cicd-circleci/</loc>
+    <lastmod>2019-08-11T10:51:47+05:30</lastmod>
+  </url>
+  
+  <url>
     <loc>http://codelab.alcide.io/codelab/</loc>
     <lastmod>2019-08-11T10:51:47+05:30</lastmod>
     <priority>0</priority>

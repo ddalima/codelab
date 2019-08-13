@@ -183,6 +183,6 @@ In this codelab we learned how to:
 * Automate the scan of *GKE* clusters in a *GCP Project* 
 
 Positive
-: An overview & use cases of Alcide Kubernetes Advisor. <a href="/codelabs/advisor-codelab-01/index.html" class="btn btn-primary" role="button">Start Codelab</a>
+: An overview & use cases of Alcide Kubernetes Advisor can be found in  <a href="/codelabs/advisor-codelab-01/index.html" class="btn btn-primary" role="button">here</a>
 
 <img src="img/welcome.svg" alt="Alcide Code-to-production secutiry" width="400"/>

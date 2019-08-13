@@ -1,0 +1,176 @@
+
+<!doctype html>
+
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="theme-color" content="#4F7DC9">
+  <meta charset="UTF-8">
+  <title>Alcide Kubernetes Advisor Overview</title>
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Source+Code+Pro:400|Roboto:400,300,400italic,500,700|Roboto+Mono">
+  <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
+  <link rel="stylesheet" href="https://storage.googleapis.com/codelab-elements/codelab-elements.css">
+  <style>
+    .success {
+      color: #1e8e3e;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <google-codelab-analytics gaid="UA-49880327-14"></google-codelab-analytics>
+  <google-codelab codelab-gaid="0"
+                  id="00005"
+                  title="Alcide Kubernetes Advisor Overview"
+                  environment="web"
+                  feedback-link="https://github.com/alcideio/pipeline">
+    
+      <google-codelab-step label="Welcome" duration="1">
+        <p>In this tutorial we will learn about <strong>Alcide Kubernetes Advisor</strong>, and how we can integrate it with CircleCI to implement continous security and cluster hygiene for one or more Kubernetes clusters.</p>
+<p class="image-container"><img alt="Alcide Code-to-production secutiry" style="width: 300.00px" src="img/ae3ed2591efa082a.png"></p>
+<p>Alcide Advisor is an agentless Kubernetes audit, compliance and hygiene scanner that&#39;s built to ensure a friciton free DevSecOps workflows. Alcide Advisor can be plugged early in the development process and before moving to production.</p>
+<h3 is-upgraded>With Alcide Advisor, the security checks you can cover includes:</h3>
+<ul>
+<li>Kubernetes infrastructure vulnerability scanning.</li>
+<li>Hunting misplaced secrets, or excessive priviliges for secret access.</li>
+<li>Workload hardening from Pod Security to network policies.</li>
+<li>Istio security configuration and best practices.</li>
+<li>Ingress Controllers for security best practices.</li>
+<li>Kubernetes API server access privileges.</li>
+<li>Kubernetes operators security best practices.</li>
+<li>Deployment conformance to labeling, annotating, resource limits and much more ...</li>
+</ul>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Prerequisites" duration="0">
+        <ul>
+<li><a href="https://circleci.com/" target="_blank">CircleCI account</a></li>
+<li><a href="https://cloud.google.com/kubernetes-engine/" target="_blank">Google GKE</a> cluster running as part of your <em>GCP Project</em></li>
+</ul>
+<p class="image-container"><img alt="Alcide Code-to-production secutiry" style="width: 800.00px" src="img/59db1bd85aca6cb1.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Prepare Your Environment" duration="7">
+        <p>We will need to create a service account that allows us to pull GKE cluster credentials into the pipleline.</p>
+<p>There is a nice <a href="https://medium.com/uptime-99/making-sense-of-kubernetes-rbac-and-iam-roles-on-gke-914131b01922" target="_blank">blog post</a> that explains how GCP Kubernetes IAM roles maps to Kubernetes RBAC.</p>
+<aside class="warning"><p>For this tutorial we will use <strong>roles/container.clusterAdmin</strong> permissions.It grants us the ability to pull cluster adminsitration credentials into our <em>kubeconfig</em>.</p>
+</aside>
+<p>If you do not have such <em>service account</em> available already please follow instructions here: <a href="https://cloud.google.com/kubernetes-engine/docs/how-to/iam" target="_blank">GKE IAM Service Account</a> to configure</p>
+<p class="image-container"><img alt="Alcide Code-to-production secutiry" style="width: 800.00px" src="img/59db1bd85aca6cb1.png"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Create a Scan Pipeline" duration="3">
+        <p>Alcide Kubernetes Advisor runs against a kubernetes cluster and requires access to kubeconfig to authenticate &amp; authorize itself to the cluster.</p>
+<p>If your pipeline can run kubectl commands against the cluster successfully - you should be ready to initiate a scan.</p>
+<p class="image-container"><img alt="Alcide Code-to-production secutiry" style="width: 400.00px" src="img/e26eace1d7dfdf8c.svg"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Environment Variables Setup" duration="3">
+        <p>Under <em>Project Settings</em> –&gt; <em>Build Settings</em> –&gt; <em>Environment Variables</em><br>Make sure you have:</p>
+<ul>
+<li>GCLOUD_SERVICE_KEY</li>
+<li>GOOGLE_PROJECT_ID</li>
+<li>GOOGLE_COMPUTE_ZONE</li>
+</ul>
+<aside class="special"><p>To run against GKE, make sure the variable <strong>GCLOUD_SERVICE_KEY</strong> contains a GCP service account file with the Cluster Admin role.</p>
+</aside>
+<p class="image-container"><img alt="Alcide Code-to-production secutiry" style="width: 400.00px" src="img/e5a79d18acb8988e.svg"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Creating our pipeline" duration="3">
+        <p>With CircleCI the pipeline trigger relies on a .circleci/config.yaml<br>and normally will fire a pipeline when changes are made to the hosting git repository.</p>
+<aside class="special"><p>We are going to use CircleCI Orb which simplifies the pipeline integration. For the latest version see <a href="https://circleci.com/orbs/registry/orb/alcideio/alcide-advisor" target="_blank">https://circleci.com/orbs/registry/orb/alcideio/alcide-advisor</a></p>
+</aside>
+<h2 is-upgraded>Your .circleci/config.yaml</h2>
+<pre><code>version: 2.1
+orbs:
+  alcide: alcideio/alcide-advisor@1.0.3
+  gcp-cli: circleci/gcp-cli@1.0.6
+  gcr: circleci/gcp-gcr@0.0.2
+  k8s: circleci/kubernetes@0.3.0  
+
+
+
+jobs:
+  deploy_and_scan_cluster:
+    description: &#34;Deploy resources into a cluster&#34;  
+    machine: true
+    parameters:
+      cluster:
+        description: &#34;The Kubernetes cluster name.&#34;
+        type: string
+    steps:
+      - checkout
+      #
+      # make sure you have the following environment variables defined:
+      # GCLOUD_SERVICE_KEY, GOOGLE_PROJECT_ID, GOOGLE_COMPUTE_ZONE
+      #
+      - gcr/gcr-auth
+      - gcp-cli/install
+      - k8s/install
+      - run: |
+          gcloud container clusters get-credentials &lt;&lt;parameters.cluster&gt;&gt;
+      - run: |
+          echo &#34;Deploy resources into the cluster&#34;
+          kubectl get pods --all-namespaces  
+      - alcide/alcide_advisor_scan:
+          #cluster_context: &#39;myclustercontext&#39;
+          report_format: &#39;html&#39;
+          fail_on_critical: false
+          alcide_apiserver: &#39;&#39;
+          policy_profile: &#39;&#39;                      
+
+workflows:
+  advisor_scan:
+    jobs:
+      - deploy_and_scan_cluster:
+          cluster: demo-cluster
+</code></pre>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Running The Pipeline" duration="2">
+        <aside class="special"><p>Triggering the pipeline workflow is done by commiting changes into the Git repository.</p>
+</aside>
+<h2 is-upgraded>Review the scan report in your pipeline artifact</h2>
+<p>The pipeline will publish the scan results into your <em>Pipeline Artifacts</em> under the <strong>advisor-report</strong> directory</p>
+<p class="image-container"><img alt="Alcide Code-to-production secutiry" style="width: 600.00px" src="img/47a932268530064a.svg"></p>
+
+
+      </google-codelab-step>
+    
+      <google-codelab-step label="Summary" duration="1">
+        <p>In this codelab we covered:</p>
+<ul>
+<li>GCP service account creation for <em>GKE</em> access</li>
+<li>Automate the scan of <em>GKE</em> clusters in a <em>CircleCI</em> pipeline</li>
+</ul>
+<aside class="special"><p>An overview &amp; use cases of Alcide Kubernetes Advisor can be found in  <a href="/codelabs/advisor-codelab-01/index.html" target="_blank">here</a></p>
+</aside>
+<p class="image-container"><img alt="Alcide Code-to-production secutiry" style="width: 400.00px" src="img/e26eace1d7dfdf8c.svg"></p>
+
+
+      </google-codelab-step>
+    
+  </google-codelab>
+
+  <script src="https://storage.googleapis.com/codelab-elements/native-shim.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/custom-elements.min.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/prettify.js"></script>
+  <script src="https://storage.googleapis.com/codelab-elements/codelab-elements.js"></script>
+
+</body>
+</html>
