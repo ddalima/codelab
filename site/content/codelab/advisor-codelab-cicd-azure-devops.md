@@ -17,4 +17,4 @@ here</a>
 <a href="https://marketplace.visualstudio.com/items?itemName=Alcide.alcide-kubernetes-advisor-ce" target="_blank">
 <img src="https://alcide.gallerycdn.vsassets.io/extensions/alcide/alcide-kubernetes-advisor-ce/2.1.7/1564028252808/Microsoft.VisualStudio.Services.Screenshots.2" alt="Azure DevOps" width="100%"/></a>
 
-> Note: this freely-available edition of Alcide Kubernrtes Advisor which scans Kubernetes cluster hygiene and security best practices. Alcide's commercial customers have access to *additional scanning features*, such as policy driven kubernetes scan, automatic updates, consuming reports from multiple clusters in a single dashboard, and enforcing policies using adminssion controller.
+> Note: this freely-available edition of Alcide Kubernetes Advisor which scans Kubernetes cluster hygiene and security best practices. Alcide's commercial customers have access to *additional scanning features*, such as policy driven kubernetes scan, automatic updates, consuming reports from multiple clusters in a single dashboard, and enforcing policies using adminssion controller.

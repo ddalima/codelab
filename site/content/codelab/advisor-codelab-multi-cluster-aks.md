@@ -16,4 +16,4 @@ The scripting implemented in this codelab, can than be used to integrate into a 
 <a href="/codelabs/advisor-codelab-03/index.html">
 <img src="/images/codelab-advisor-03.png" alt="Lets Start" width="600"/></a>
 
-> Note: this freely-available edition of Alcide Kubernrtes Advisor which scans Kubernetes cluster hygiene and security best practices. Alcide's commercial customers have access to *additional scanning features*, such as policy driven kubernetes scan, automatic updates, consuming reports from multiple clusters in a single dashboard, and enforcing policies using adminssion controller.
+> Note: this freely-available edition of Alcide Kubernetes Advisor which scans Kubernetes cluster hygiene and security best practices. Alcide's commercial customers have access to *additional scanning features*, such as policy driven kubernetes scan, automatic updates, consuming reports from multiple clusters in a single dashboard, and enforcing policies using adminssion controller.
